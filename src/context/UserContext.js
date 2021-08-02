@@ -44,6 +44,7 @@ export const UserProvider = ({ children }) => {
         user,
         setUserAndToken,
         setUser,
+        resetUser,
       }}
     >
       {children}

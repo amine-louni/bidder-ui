@@ -99,7 +99,7 @@ export default function SimpleCard() {
                       bg: 'blue.500',
                     }}
                   >
-                    Sign in to {process.env.REACT_APP_API_URL}
+                    Sign in to
                   </Button>
                 </Stack>
               </Stack>

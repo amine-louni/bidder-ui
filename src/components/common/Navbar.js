@@ -18,7 +18,8 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { HiUserAdd } from 'react-icons/hi';
-import { Link as ReachLink } from 'react-router-dom';
+import { Link as ReachLink, useHistory } from 'react-router-dom';
+import { useUser } from '../../hooks/user';
 
 const Links = ['Home', 'About', 'Products'];
 
@@ -41,7 +42,12 @@ const NavLink = ({ children }) => (
 
 export default function Simple() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const { user, resetUser } = useUser();
+  const history = useHistory();
+  const logOut = () => {
+    resetUser();
+    history.push('/');
+  };
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} py="5">
@@ -82,7 +88,7 @@ export default function Simple() {
               </HStack>
             </HStack>
             <Flex alignItems={'center'}>
-              {false && (
+              {user._id && (
                 <Menu>
                   <MenuButton
                     as={Button}
@@ -92,22 +98,28 @@ export default function Simple() {
                     minW={0}
                   >
                     <Avatar
-                      size={'sm'}
-                      src={
-                        'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                      }
+                      borderWidth="4px"
+                      borderColor="teal"
+                      size={'md'}
+                      src={user?.avatar}
                     />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem>Link 1</MenuItem>
-                    <MenuItem>Link 2</MenuItem>
+                    <MenuItem>My profile</MenuItem>
+                    <MenuItem>Purchase list</MenuItem>
+                    <MenuItem>My sellings list</MenuItem>
+                    <MenuItem>My Pending </MenuItem>
+                    <MenuItem>My confirmed bids</MenuItem>
+
                     <MenuDivider />
-                    <MenuItem>Link 3</MenuItem>
+                    <MenuItem onClick={logOut} color="red">
+                      Logout
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               )}
 
-              {true && (
+              {!user._id && (
                 <>
                   <Button
                     as={ReachLink}
