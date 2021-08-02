@@ -9,6 +9,7 @@ import {
   Image,
   Text,
 } from '@chakra-ui/react';
+import { Link as BrowserLink } from 'react-router-dom';
 import axios from 'axios';
 import { Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
@@ -32,7 +33,7 @@ export default function Register() {
 
     if (res.data.status === 'success') {
       toast.success(`Signup with success`);
-      history.push('/');
+      history.goBack();
       setUserAndToken(res.data.data.user, res.data.token);
     }
   };
@@ -56,9 +57,14 @@ export default function Register() {
   });
   return (
     <Flex minH={'100vh'}>
-      <Stack width={['100%', '100%', '60%', '60%']} py={12} px={12}>
+      <Stack
+        bg="gray.100"
+        width={['100%', '100%', '60%', '60%']}
+        py={12}
+        px={12}
+      >
         <Stack>
-          <Heading mb="10">
+          <Heading mb="3">
             <Text
               as={'span'}
               position={'relative'}
@@ -74,7 +80,7 @@ export default function Register() {
                 zIndex: -1,
               }}
             >
-              Explore The Recent Products
+              Create Your Account For Free.
             </Text>
           </Heading>
         </Stack>
@@ -89,7 +95,7 @@ export default function Register() {
             onSubmit={onSubmit}
             validationSchema={validationSchema}
           >
-            {({ handleSubmit, values, errors }) => (
+            {({ handleSubmit, values, errors, loading, isSubmitting }) => (
               <Stack spacing={4}>
                 <InputControl
                   id="name"
@@ -101,14 +107,14 @@ export default function Register() {
                   id="email"
                   name="email"
                   type="email"
-                  label="Email address"
+                  label="Your email address"
                 />
 
                 <InputControl
                   id="password"
                   type="password"
                   name="password"
-                  label="Enter your password"
+                  label="Your password"
                 />
 
                 <InputControl
@@ -117,7 +123,18 @@ export default function Register() {
                   name="passwordConfirm"
                   label="Confirm your password"
                 />
-
+                <Button
+                  isLoading={isSubmitting}
+                  loadingText="Submitting"
+                  onClick={handleSubmit}
+                  bg={'teal.400'}
+                  color={'white'}
+                  _hover={{
+                    bg: 'teal.500',
+                  }}
+                >
+                  SIGN UP
+                </Button>
                 <Stack spacing={10}>
                   <Stack
                     direction={{ base: 'column', sm: 'row' }}
@@ -125,18 +142,15 @@ export default function Register() {
                     justify={'space-between'}
                   >
                     <div></div>
-                    <Link color={'teal.400'}>You don't have an account ?</Link>
+                    <Link
+                      fontWeight="bold"
+                      to="/login"
+                      as={BrowserLink}
+                      color={'teal.400'}
+                    >
+                      You already have an account ? Login
+                    </Link>
                   </Stack>
-                  <Button
-                    onClick={handleSubmit}
-                    bg={'teal.400'}
-                    color={'white'}
-                    _hover={{
-                      bg: 'teal.500',
-                    }}
-                  >
-                    Sign up
-                  </Button>
                 </Stack>
               </Stack>
             )}
@@ -144,7 +158,10 @@ export default function Register() {
         </Box>
       </Stack>
 
-      <Flex width={['100%', '100%', '38%', '38%']}>
+      <Flex
+        display={['none', 'none', 'flex', 'flex']}
+        width={['100%', '100%', '38%', '38%']}
+      >
         <Image boxSize="100%" objectFit="contain" src={RegisterImg} />
       </Flex>
     </Flex>

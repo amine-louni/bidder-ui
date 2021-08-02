@@ -17,8 +17,8 @@ import {
   Container,
   Text,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { HiUserAdd } from 'react-icons/hi';
+import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import { HiArrowRight, HiUserAdd } from 'react-icons/hi';
 import { Link as ReachLink, useHistory } from 'react-router-dom';
 import { useUser } from '../../hooks/user';
 
@@ -111,14 +111,22 @@ export default function Simple() {
                       />
                     </MenuButton>
                     <MenuList>
-                      <MenuItem>My profile</MenuItem>
-                      <MenuItem>Purchase list</MenuItem>
-                      <MenuItem>My sellings list</MenuItem>
-                      <MenuItem>My Pending </MenuItem>
-                      <MenuItem>My confirmed bids</MenuItem>
-
+                      <MenuItem fontWeight="bold" icon={<AddIcon />}>
+                        Sell
+                      </MenuItem>
                       <MenuDivider />
-                      <MenuItem onClick={logOut} color="red">
+                      <MenuItem fontWeight="medium">My Profile</MenuItem>
+                      <MenuItem fontWeight="medium">Purchase List</MenuItem>
+                      <MenuItem fontWeight="medium">My sellings List</MenuItem>
+                      <MenuItem fontWeight="medium">My Pending </MenuItem>
+                      <MenuItem fontWeight="medium">My Confirmed bids</MenuItem>
+                      <MenuDivider />
+                      <MenuItem
+                        fontWeight="bold"
+                        icon={<CloseIcon />}
+                        onClick={logOut}
+                        color="red"
+                      >
                         Logout
                       </MenuItem>
                     </MenuList>
@@ -131,14 +139,24 @@ export default function Simple() {
                   <Button
                     as={ReachLink}
                     to="/login"
-                    rightIcon={<HiUserAdd />}
                     colorScheme="teal"
-                    ml="3"
-                    variant="ghost"
-                    fontWeight="bold"
-                    ize="lg"
+                    variant="outline"
+                    rounded={'full'}
+                    px="8"
+                    py="5"
                   >
-                    SIGN IN
+                    Log In
+                  </Button>
+                  <Button
+                    as={ReachLink}
+                    to="/login"
+                    ml="3"
+                    colorScheme="teal"
+                    rounded={'full'}
+                    px="8"
+                    py="5"
+                  >
+                    Sign Up
                   </Button>
                 </>
               )}
