@@ -8,8 +8,6 @@ import {
   Button,
   Image,
   Icon,
-  IconButton,
-  createIcon,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -19,159 +17,162 @@ export default function CallToActionWithVideo() {
   const MotionBox = motion(Box);
   const MotionImage = motion(Image);
   return (
-    <Container maxW={'container.lg'}>
-      <Stack
-        align={'center'}
-        spacing={{ base: 8, md: 10 }}
-        py={{ base: 20, md: 28 }}
-        direction={{ base: 'column', md: 'row' }}
+    <Box bg="gray.100" clipPath="polygon(0 0, 100% 0, 100% 100%, 0 90%)">
+      <Container
+        maxW={['container.sm', 'container.md', 'container.lg', 'container.lg']}
       >
-        <Stack flex={1} spacing={{ base: 5, md: 10 }}>
-          <Heading
-            lineHeight={1.1}
-            fontWeight={600}
-            fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
-          >
-            <Text
-              as={'span'}
-              position={'relative'}
-              _after={{
-                content: "''",
-                width: 'full',
-                height: '30%',
-                position: 'absolute',
-                bottom: 1,
-                left: 0,
-                bg: 'teal.200',
-                zIndex: -1,
-              }}
-            >
-              Connecting
-            </Text>
-            <br />
-            <Text as={'span'} color={'teal'}>
-              Buyers & Sellers
-            </Text>
-          </Heading>
-          <Text color={'gray.500'}>
-            Snippy is a rich coding snippets app that lets you create your own
-            code snippets, categorize them, and even sync them in the cloud so
-            you can use them anywhere. All that is free!
-          </Text>
-          <Stack
-            spacing={{ base: 4, sm: 6 }}
-            direction={{ base: 'column', sm: 'row' }}
-          >
-            <Button
-              rounded={'full'}
-              size={'lg'}
-              fontWeight={'bold'}
-              px={12}
-              colorScheme="teal"
-              leftIcon={<HiShoppingCart h={4} w={4} color={'gray.300'} />}
-            >
-              SHOP NOW
-            </Button>
-          </Stack>
-        </Stack>
-        <Flex
-          flex={1}
-          justify={'center'}
+        <Stack
           align={'center'}
-          position={'relative'}
-          w={'full'}
+          spacing={{ base: 8, md: 10 }}
+          py={{ base: 20, md: 28 }}
+          direction={{ base: 'column', md: 'row' }}
         >
-          <Blob
-            w={'150%'}
-            h={'150%'}
-            position={'absolute'}
-            top={'-20%'}
-            left={0}
-            zIndex={-1}
-            color={useColorModeValue('teal.50', 'teal.400')}
-          />
-          <MotionBox
+          <Stack flex={1} spacing={{ base: 5, md: 10 }}>
+            <Heading
+              lineHeight={1.1}
+              fontWeight={600}
+              fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
+            >
+              <Text
+                as={'span'}
+                position={'relative'}
+                _after={{
+                  content: "''",
+                  width: 'full',
+                  height: '30%',
+                  position: 'absolute',
+                  bottom: 1,
+                  left: 0,
+                  bg: 'teal.200',
+                  zIndex: -1,
+                }}
+              >
+                Connecting
+              </Text>
+              <br />
+              <Text
+                fontSize={{ base: '2xl', sm: '3xl', lg: '5xl' }}
+                as={'span'}
+                color={'teal'}
+              >
+                Buyers & Sellers
+              </Text>
+            </Heading>
+            <Text color={'gray.500'}>
+              Snippy is a rich coding snippets app that lets you create your own
+              code snippets, categorize them, and even sync them in the cloud so
+              you can use them anywhere. All that is free!
+            </Text>
+            <Stack
+              spacing={{ base: 4, sm: 6 }}
+              direction={{ base: 'column', sm: 'row' }}
+            >
+              <Button
+                rounded={'full'}
+                size={'lg'}
+                fontWeight={'bold'}
+                px={12}
+                colorScheme="teal"
+                leftIcon={<HiShoppingCart h={4} w={4} color={'gray.300'} />}
+              >
+                SHOP NOW
+              </Button>
+            </Stack>
+          </Stack>
+          <Flex
+            display={['none', 'none', 'none', 'flex']}
+            flex={1}
+            justify={'center'}
+            align={'center'}
             position={'relative'}
-            height={'300px'}
-            rounded={'2xl'}
-            width={'full'}
+            w={'full'}
           >
-            <MotionImage
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 250,
-                damping: 40,
-                delay: 0,
-              }}
-              alt={'Hero Image'}
-              rounded="lg"
-              fit={'cover'}
-              align={'center'}
-              w={'70%'}
-              h={'100%'}
-              zIndex={30}
-              src={
-                'https://images.unsplash.com/photo-1588541536236-a65adf58af7b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80'
-              }
-            />
-            <MotionImage
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 300,
-                damping: 20,
-              }}
-              alt={'Hero Image'}
-              rounded="lg"
-              fit={'cover'}
-              align={'center'}
-              w={'50%'}
-              h={'50%'}
+            <Blob
+              w={'150%'}
+              h={'150%'}
               position={'absolute'}
-              right={'0%'}
-              bottom={'-15%'}
-              src={
-                'https://images.unsplash.com/photo-1526948531399-320e7e40f0ca?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80'
-              }
+              top={'-20%'}
+              left={0}
+              zIndex={-1}
+              color={useColorModeValue('teal.50', 'teal.400')}
             />
+            <MotionBox
+              position={'relative'}
+              height={'300px'}
+              rounded={'2xl'}
+              width={'full'}
+            >
+              <MotionImage
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 250,
+                  damping: 40,
+                  delay: 0,
+                }}
+                alt={'Hero Image'}
+                rounded="lg"
+                fit={'cover'}
+                align={'center'}
+                w={'70%'}
+                h={'100%'}
+                zIndex={30}
+                src={
+                  'https://images.unsplash.com/photo-1560393464-5c69a73c5770?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=401&q=80'
+                }
+              />
+              <MotionImage
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 300,
+                  damping: 20,
+                }}
+                alt={'Hero Image'}
+                rounded="lg"
+                fit={'cover'}
+                align={'center'}
+                w={'50%'}
+                h={'50%'}
+                position={'absolute'}
+                right={'0%'}
+                bottom={'-15%'}
+                src={
+                  'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80'
+                }
+              />
 
-            <MotionImage
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 960,
-                damping: 250,
-                delay: 0.3,
-              }}
-              alt={'Hero Image'}
-              rounded="lg"
-              fit={'cover'}
-              align={'center'}
-              w={'70%'}
-              h={'70%'}
-              position={'absolute'}
-              right={'-10%'}
-              top={'-15%'}
-              src={
-                'https://images.unsplash.com/photo-1526948531399-320e7e40f0ca?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80'
-              }
-            />
-          </MotionBox>
-        </Flex>
-      </Stack>
-    </Container>
+              <MotionImage
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 960,
+                  damping: 250,
+                  delay: 0.3,
+                }}
+                alt={'Hero Image'}
+                rounded="lg"
+                fit={'cover'}
+                align={'center'}
+                w={'70%'}
+                h={'70%'}
+                position={'absolute'}
+                right={'-10%'}
+                top={'-15%'}
+                src={
+                  'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80'
+                }
+              />
+            </MotionBox>
+          </Flex>
+        </Stack>
+      </Container>
+    </Box>
   );
 }
-
-const PlayIcon = createIcon({
-  displayName: 'PlayIcon',
-  viewBox: '0 0 58 58',
-  d: 'M28.9999 0.562988C13.3196 0.562988 0.562378 13.3202 0.562378 29.0005C0.562378 44.6808 13.3196 57.438 28.9999 57.438C44.6801 57.438 57.4374 44.6808 57.4374 29.0005C57.4374 13.3202 44.6801 0.562988 28.9999 0.562988ZM39.2223 30.272L23.5749 39.7247C23.3506 39.8591 23.0946 39.9314 22.8332 39.9342C22.5717 39.9369 22.3142 39.8701 22.0871 39.7406C21.86 39.611 21.6715 39.4234 21.5408 39.1969C21.4102 38.9705 21.3421 38.7133 21.3436 38.4519V19.5491C21.3421 19.2877 21.4102 19.0305 21.5408 18.8041C21.6715 18.5776 21.86 18.3899 22.0871 18.2604C22.3142 18.1308 22.5717 18.064 22.8332 18.0668C23.0946 18.0696 23.3506 18.1419 23.5749 18.2763L39.2223 27.729C39.4404 27.8619 39.6207 28.0486 39.7458 28.2713C39.8709 28.494 39.9366 28.7451 39.9366 29.0005C39.9366 29.2559 39.8709 29.507 39.7458 29.7297C39.6207 29.9523 39.4404 30.1391 39.2223 30.272Z',
-});
 
 export const Blob = props => {
   return (

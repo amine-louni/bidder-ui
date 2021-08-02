@@ -5,12 +5,7 @@ import {
   Image,
   Badge,
   useColorModeValue,
-  Icon,
-  chakra,
-  Tooltip,
 } from '@chakra-ui/react';
-import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
-import { FiShoppingCart } from 'react-icons/fi';
 
 const data = {
   isNew: true,
@@ -26,12 +21,19 @@ function ProductCard() {
   return (
     <Box
       bg={useColorModeValue('white', 'gray.800')}
-      width={['100%', '50%', '30%', '30%']}
+      width={['100%', '46%', '32%', '32%']}
       maxW="sm"
-      borderWidth="1px"
+      borderWidth="2px"
       rounded="lg"
-      shadow="lg"
       position="relative"
+      cursor="pointer"
+      _hover={{
+        bg: 'gray.100',
+        transform: 'scale(1.03)',
+      }}
+      transition={{
+        type: 'spring',
+      }}
     >
       {data.isNew && (
         <Circle

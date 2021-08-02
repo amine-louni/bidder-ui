@@ -119,7 +119,7 @@ export default function Simple() {
                     fontWeight="bold"
                     ize="lg"
                   >
-                    SIGN UP
+                    SIGN IN
                   </Button>
                 </>
               )}

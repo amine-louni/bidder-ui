@@ -4,6 +4,7 @@ import Footer from '../components/common/Footer';
 import { Box, Container, Flex, Heading, Text } from '@chakra-ui/react';
 import ProductCard from '../components/ProductCard';
 import Hero from '../components/home/Hero';
+import Features from '../components/home/Features';
 
 export default function Home() {
   return (
@@ -30,6 +31,7 @@ export default function Home() {
               Explore The Recent Products
             </Text>
           </Heading>
+
           <Flex flexWrap="wrap" gridGap="1.5" justify="space-between">
             <ProductCard />
             <ProductCard />
@@ -37,6 +39,9 @@ export default function Home() {
           </Flex>
         </Container>
       </Box>
+
+      <Features />
+
       <Footer />
     </>
   );

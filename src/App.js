@@ -1,31 +1,37 @@
 import React from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from '@chakra-ui/react';
+import { ChakraProvider, theme } from '@chakra-ui/react';
 
 import Home from './views/Home';
 import Login from './views/Login';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { UserProvider } from './context/UserContext';
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <div className="App">
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/login" component={Login} />
-          </Switch>
-        </BrowserRouter>
-      </div>
+      <UserProvider>
+        <div className="App">
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            style={{ borderRadius: 60, fontWeight: 'bold' }}
+          />
+
+          <BrowserRouter>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/login" component={Login} />
+            </Switch>
+          </BrowserRouter>
+        </div>
+      </UserProvider>
     </ChakraProvider>
   );
 }
