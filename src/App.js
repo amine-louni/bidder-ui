@@ -8,6 +8,7 @@ import Login from './views/Login';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { UserProvider } from './context/UserContext';
+import Register from './views/Register';
 function App() {
   return (
     <ChakraProvider theme={theme}>
@@ -28,6 +29,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
             </Switch>
           </BrowserRouter>
         </div>

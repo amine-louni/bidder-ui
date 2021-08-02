@@ -15,6 +15,7 @@ import {
   useColorModeValue,
   Stack,
   Container,
+  Text,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { HiUserAdd } from 'react-icons/hi';
@@ -77,6 +78,7 @@ export default function Simple() {
                   />
                 </svg>
               </Box>
+
               <HStack
                 as={'nav'}
                 spacing={4}
@@ -89,34 +91,39 @@ export default function Simple() {
             </HStack>
             <Flex alignItems={'center'}>
               {user._id && (
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    rounded={'full'}
-                    variant={'link'}
-                    cursor={'pointer'}
-                    minW={0}
-                  >
-                    <Avatar
-                      borderWidth="4px"
-                      borderColor="teal"
-                      size={'md'}
-                      src={user?.avatar}
-                    />
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem>My profile</MenuItem>
-                    <MenuItem>Purchase list</MenuItem>
-                    <MenuItem>My sellings list</MenuItem>
-                    <MenuItem>My Pending </MenuItem>
-                    <MenuItem>My confirmed bids</MenuItem>
+                <>
+                  <Text fontWeight="500" mr="3">
+                    {user.name}
+                  </Text>
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      rounded={'full'}
+                      variant={'link'}
+                      cursor={'pointer'}
+                      minW={0}
+                    >
+                      <Avatar
+                        borderWidth="4px"
+                        borderColor="teal"
+                        size={'md'}
+                        src={user?.avatar}
+                      />
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem>My profile</MenuItem>
+                      <MenuItem>Purchase list</MenuItem>
+                      <MenuItem>My sellings list</MenuItem>
+                      <MenuItem>My Pending </MenuItem>
+                      <MenuItem>My confirmed bids</MenuItem>
 
-                    <MenuDivider />
-                    <MenuItem onClick={logOut} color="red">
-                      Logout
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
+                      <MenuDivider />
+                      <MenuItem onClick={logOut} color="red">
+                        Logout
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </>
               )}
 
               {!user._id && (

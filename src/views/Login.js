@@ -8,6 +8,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import axios from 'axios';
+import { Link as BrowserLink } from 'react-router-dom';
 import { Formik } from 'formik';
 import { InputControl } from 'formik-chakra-ui';
 import { toast } from 'react-toastify';
@@ -89,7 +90,9 @@ export default function SimpleCard() {
                     justify={'space-between'}
                   >
                     <div></div>
-                    <Link color={'blue.400'}>You don't have an account ?</Link>
+                    <Link as={BrowserLink} to="/register" color={'blue.400'}>
+                      You don't have an account ?
+                    </Link>
                   </Stack>
                   <Button
                     onClick={handleSubmit}
