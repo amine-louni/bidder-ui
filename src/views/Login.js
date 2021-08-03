@@ -51,7 +51,7 @@ export default function Register() {
     <Flex minH={'100vh'}>
       <Stack
         bg="gray.100"
-        width={['100%', '100%', '60%', '60%']}
+        width={['100%', '100%', '50%', '50%']}
         py={12}
         px={12}
       >
@@ -93,14 +93,14 @@ export default function Register() {
                   id="email"
                   name="email"
                   type="email"
-                  label="Your email address"
+                  inputProps={{ placeholder: 'You email address' }}
                 />
 
                 <InputControl
                   id="password"
                   type="password"
                   name="password"
-                  label="Your password"
+                  inputProps={{ placeholder: 'You password' }}
                 />
                 <Button
                   isLoading={isSubmitting}
@@ -140,7 +140,7 @@ export default function Register() {
       <Flex
         display={['none', 'none', 'flex', 'flex']}
         p="5"
-        width={['100%', '100%', '38%', '38%']}
+        width={['100%', '100%', '50%', '50%']}
       >
         <Image boxSize="100%" objectFit="contain" src={LoginImg} />
       </Flex>

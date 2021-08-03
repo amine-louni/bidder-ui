@@ -38,21 +38,25 @@ export default function Register() {
     }
   };
   const initialValues = {
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     passwordConfirm: '',
   };
   const validationSchema = Yup.object({
-    name: Yup.string()
-      .required('Required')
-      .min(3, 'Name must contain at least 2 characters'),
-    email: Yup.string().email().required('Required'),
-    password: Yup.string().required('Required').min(6, {
-      message: `invalid`,
-    }),
+    firstName: Yup.string().required().min(3).label('First name'),
+    lastName: Yup.string().required().min(3).label('Last name'),
+    email: Yup.string().email().required().label('Email field'),
+    password: Yup.string()
+      .required()
+      .min(6, {
+        message: `invalid`,
+      })
+      .label('Password'),
     passwordConfirm: Yup.string()
-      .required('Required')
+      .required()
+      .label('Password confimation is a required field')
       .oneOf([Yup.ref('password')], 'Password is not match'),
   });
   return (
@@ -61,15 +65,16 @@ export default function Register() {
         display={['none', 'none', 'flex', 'flex']}
         width={['100%', '100%', '48%', '48%']}
       >
-        <Image boxSize="100%" objectFit="contain" src={RegisterImg} />
+        <Image
+          boxSize="100%"
+          objectFit="cover"
+          src={
+            'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80'
+          }
+        />
       </Flex>
 
-      <Stack
-        bg="gray.100"
-        width={['100%', '100%', '50%', '50%']}
-        py={12}
-        px={12}
-      >
+      <Stack width={['100%', '100%', '50%', '50%']} py={12} px={12}>
         <Stack>
           <Heading mb="15">
             <Text
@@ -91,12 +96,7 @@ export default function Register() {
             </Text>
           </Heading>
         </Stack>
-        <Box
-          rounded={'lg'}
-          bg={useColorModeValue('white', 'gray.700')}
-          boxShadow={'lg'}
-          p={8}
-        >
+        <Box rounded={'lg'} bg={useColorModeValue('white', 'gray.700')} p={8}>
           <Formik
             initialValues={initialValues}
             onSubmit={onSubmit}
@@ -105,30 +105,37 @@ export default function Register() {
             {({ handleSubmit, values, errors, loading, isSubmitting }) => (
               <Stack spacing={4}>
                 <InputControl
-                  id="name"
-                  type="name"
-                  name="name"
-                  label="Your full name"
+                  id="firstName"
+                  type="firstName"
+                  name="firstName"
+                  inputProps={{ placeholder: 'First Name' }}
+                />
+
+                <InputControl
+                  id="lastName"
+                  type="lastName"
+                  name="lastName"
+                  inputProps={{ placeholder: 'Last Name' }}
                 />
                 <InputControl
                   id="email"
                   name="email"
                   type="email"
-                  label="Your email address"
+                  inputProps={{ placeholder: 'Email Address' }}
                 />
 
                 <InputControl
                   id="password"
                   type="password"
                   name="password"
-                  label="Your password"
+                  inputProps={{ placeholder: 'Password' }}
                 />
 
                 <InputControl
                   id="passwordConfirm"
                   type="passwordConfirm"
                   name="passwordConfirm"
-                  label="Confirm your password"
+                  inputProps={{ placeholder: 'Confrim your Password' }}
                 />
                 <Button
                   isLoading={isSubmitting}

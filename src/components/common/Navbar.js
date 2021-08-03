@@ -106,7 +106,7 @@ export default function Simple() {
                         borderWidth="4px"
                         borderColor="teal"
                         size={'md'}
-                        src={user?.avatar}
+                        src={`https://${user?.avatar}`}
                       />
                     </MenuButton>
                     <MenuList>
@@ -153,7 +153,7 @@ export default function Simple() {
                   </Button>
                   <Button
                     as={BrowserLink}
-                    to="/login"
+                    to="/register"
                     ml="3"
                     colorScheme="teal"
                     rounded={'full'}

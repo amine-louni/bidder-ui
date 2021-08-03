@@ -150,7 +150,6 @@ export default function Sell() {
                       </Box>
                       <ButtonGroup>
                         <SubmitButton>Submit</SubmitButton>
-                        <ResetButton>Reset</ResetButton>
                       </ButtonGroup>
 
                       <Box as="pre" marginY={10}>
