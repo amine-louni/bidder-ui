@@ -1,3 +1,4 @@
+import { MinusIcon } from '@chakra-ui/icons';
 import {
   Flex,
   Circle,
@@ -5,19 +6,22 @@ import {
   Image,
   Badge,
   useColorModeValue,
+  Text,
+  ListItem,
+  ListIcon,
+  List,
 } from '@chakra-ui/react';
+import {
+  HiCheck,
+  HiCheckCircle,
+  HiClock,
+  HiOutlineCheckCircle,
+} from 'react-icons/hi';
+import Countdown from 'react-countdown';
 
-const data = {
-  isNew: true,
-  imageURL:
-    'https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=4600&q=80',
-  name: 'Wayfarer Classic',
-  price: 4.5,
-  rating: 4.2,
-  numReviews: 34,
-};
-
-function ProductCard() {
+function ProductCard({ product }) {
+  const { name, thumbnail, initialPrice, category, currentPrice, deadDate } =
+    product;
   return (
     <Box
       bg={useColorModeValue('white', 'gray.800')}
@@ -27,55 +31,66 @@ function ProductCard() {
       rounded="lg"
       position="relative"
       cursor="pointer"
-      _hover={{
-        bg: 'gray.100',
-        transform: 'scale(1.03)',
-      }}
       transition={{
         type: 'spring',
       }}
     >
-      {data.isNew && (
-        <Circle
-          size="10px"
+      {true && (
+        <Badge
           position="absolute"
           top={2}
           right={2}
-          bg="red.200"
-        />
+          rounded="full"
+          px="2"
+          fontSize="0.8em"
+          colorScheme="red"
+        >
+          {category.name}
+        </Badge>
       )}
 
-      <Image
-        src={data.imageURL}
-        alt={`Picture of ${data.name}`}
-        roundedTop="lg"
-      />
+      <Image src={thumbnail} alt={`Picture of ${name}`} roundedTop="lg" />
 
-      <Box p="6">
-        <Box d="flex" alignItems="baseline">
-          {data.isNew && (
-            <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="red">
-              Category
-            </Badge>
-          )}
-        </Box>
+      <Box p="6" bg="gray.100">
         <Flex mt="1" justifyContent="space-between" alignContent="center">
           <Box
+            textTransform="capitalize"
             fontSize="2xl"
             fontWeight="semibold"
             as="h4"
             lineHeight="tight"
             isTruncated
+            mb="1rem"
           >
-            {data.name}
+            {name}
           </Box>
         </Flex>
-
-        <Flex justifyContent="space-between" alignContent="center">
-          <Box fontSize="2xl" color={useColorModeValue('gray.800', 'white')}>
-            {data.price.toFixed(2)} DA
-          </Box>
-        </Flex>
+        <List spacing={3}>
+          <ListItem>
+            <ListIcon as={MinusIcon} color="green.500" />
+            <Badge>initial Price: {initialPrice.toFixed(2)} DA</Badge>
+          </ListItem>
+          <ListItem>
+            <ListIcon as={HiCheckCircle} color="green.500" />
+            <Badge colorScheme="green.300">
+              current Price: {currentPrice.toFixed(2)} DA
+            </Badge>
+          </ListItem>
+          <ListItem>
+            <ListIcon as={HiClock} color="green.500" />
+            <Badge colorScheme="yellow">
+              <Countdown
+                renderer={props => (
+                  <Text>
+                    {props.days} days | {props.hours}:{props.minutes} :
+                    {props.seconds}
+                  </Text>
+                )}
+                date={deadDate}
+              />
+            </Badge>
+          </ListItem>
+        </List>
       </Box>
     </Box>
   );
