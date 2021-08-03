@@ -18,8 +18,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
-import { HiArrowRight, HiUserAdd } from 'react-icons/hi';
-import { Link as ReachLink, useHistory } from 'react-router-dom';
+import { Link as BrowserLink, useHistory } from 'react-router-dom';
 import { useUser } from '../../hooks/user';
 
 const Links = ['Home', 'About', 'Products'];
@@ -111,7 +110,12 @@ export default function Simple() {
                       />
                     </MenuButton>
                     <MenuList>
-                      <MenuItem fontWeight="bold" icon={<AddIcon />}>
+                      <MenuItem
+                        as={BrowserLink}
+                        to="/sell"
+                        fontWeight="bold"
+                        icon={<AddIcon />}
+                      >
                         Sell
                       </MenuItem>
                       <MenuDivider />
@@ -137,7 +141,7 @@ export default function Simple() {
               {!user._id && (
                 <>
                   <Button
-                    as={ReachLink}
+                    as={BrowserLink}
                     to="/login"
                     colorScheme="teal"
                     variant="outline"
@@ -148,7 +152,7 @@ export default function Simple() {
                     Log In
                   </Button>
                   <Button
-                    as={ReachLink}
+                    as={BrowserLink}
                     to="/login"
                     ml="3"
                     colorScheme="teal"

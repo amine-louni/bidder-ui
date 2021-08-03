@@ -8,7 +8,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({});
 
   const setUserAndToken = (user, token) => {
-    setUser(user);
+    setUser({ token, ...user });
     localStorage.setItem('user-token', token);
   };
   const resetUser = () => {

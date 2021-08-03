@@ -57,14 +57,21 @@ export default function Register() {
   });
   return (
     <Flex minH={'100vh'}>
+      <Flex
+        display={['none', 'none', 'flex', 'flex']}
+        width={['100%', '100%', '48%', '48%']}
+      >
+        <Image boxSize="100%" objectFit="contain" src={RegisterImg} />
+      </Flex>
+
       <Stack
         bg="gray.100"
-        width={['100%', '100%', '60%', '60%']}
+        width={['100%', '100%', '50%', '50%']}
         py={12}
         px={12}
       >
         <Stack>
-          <Heading mb="3">
+          <Heading mb="15">
             <Text
               as={'span'}
               position={'relative'}
@@ -157,13 +164,6 @@ export default function Register() {
           </Formik>
         </Box>
       </Stack>
-
-      <Flex
-        display={['none', 'none', 'flex', 'flex']}
-        width={['100%', '100%', '38%', '38%']}
-      >
-        <Image boxSize="100%" objectFit="contain" src={RegisterImg} />
-      </Flex>
     </Flex>
   );
 }

@@ -9,6 +9,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { UserProvider } from './context/UserContext';
 import Register from './views/Register';
+import Product from './views/Product';
+import Sell from './views/Sell';
+import './style.css';
+
 function App() {
   return (
     <ChakraProvider theme={theme}>
@@ -30,6 +34,8 @@ function App() {
               <Route exact path="/" component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
+              <Route exact path="/sell" component={Sell} />
+              <Route exact path="/product/:id" component={Product} />
             </Switch>
           </BrowserRouter>
         </div>
