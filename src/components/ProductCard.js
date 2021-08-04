@@ -1,4 +1,5 @@
 import { MinusIcon } from '@chakra-ui/icons';
+import { Link as BrowserLink } from 'react-router-dom';
 import {
   Flex,
   Circle,
@@ -20,38 +21,44 @@ import {
 import Countdown from 'react-countdown';
 
 function ProductCard({ product }) {
-  const { name, thumbnail, initialPrice, category, currentPrice, deadDate } =
-    product;
+  const {
+    name,
+    _id,
+    thumbnail,
+    initialPrice,
+    category,
+    currentPrice,
+    deadDate,
+  } = product;
   return (
     <Box
+      as={BrowserLink}
+      to={`/products/${_id}`}
       bg={useColorModeValue('white', 'gray.800')}
-      width={['100%', '46%', '32%', '32%']}
+      width={['100%', '46%', '38%', '38%']}
       maxW="sm"
       borderWidth="2px"
       rounded="lg"
       position="relative"
       cursor="pointer"
-      transition={{
-        type: 'spring',
+      overflow="hidden"
+      _hover={{
+        '& img': {
+          transform: 'scale(1.1)',
+        },
       }}
     >
-      {true && (
-        <Badge
-          position="absolute"
-          top={2}
-          right={2}
-          rounded="full"
-          px="2"
-          fontSize="0.8em"
-          colorScheme="red"
-        >
-          {category.name}
-        </Badge>
-      )}
-
-      <Image src={thumbnail} alt={`Picture of ${name}`} roundedTop="lg" />
+      <Image
+        css={{ transition: 'all 250ms linear' }}
+        src={thumbnail}
+        alt={`Picture of ${name}`}
+        roundedTop="lg"
+      />
 
       <Box p="6" bg="gray.100">
+        <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="red">
+          {category.name}
+        </Badge>
         <Flex mt="1" justifyContent="space-between" alignContent="center">
           <Box
             textTransform="capitalize"

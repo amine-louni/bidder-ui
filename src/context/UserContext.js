@@ -29,7 +29,7 @@ export const UserProvider = ({ children }) => {
         );
 
         if (res.data.status === 'success') {
-          setUser(res.data.data.data);
+          setUser(res.data.data);
         } else {
           resetUser();
         }

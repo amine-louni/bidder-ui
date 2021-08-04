@@ -89,7 +89,7 @@ export default function Simple() {
               </HStack>
             </HStack>
             <Flex alignItems={'center'}>
-              {user._id && (
+              {user?._id && (
                 <>
                   <Text fontWeight="500" mr="3">
                     {user.name}
@@ -138,7 +138,7 @@ export default function Simple() {
                 </>
               )}
 
-              {!user._id && (
+              {!user?._id && (
                 <>
                   <Button
                     as={BrowserLink}

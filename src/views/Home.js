@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/common/Navbar';
 import Footer from '../components/common/Footer';
-import { Box, Container, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Container, Flex, Heading, Spinner, Text } from '@chakra-ui/react';
 import ProductCard from '../components/ProductCard';
 import Hero from '../components/home/Hero';
 import Features from '../components/home/Features';
@@ -9,15 +9,18 @@ import axios from 'axios';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
   const fetchProducts = async () => {
     const res = await axios
       .get(`${process.env.REACT_APP_API_URL}/api/v1/products`, {})
       .catch(function (error) {
         console.log(error.response);
+        setLoadingProducts(false);
       });
     console.log(res);
     if (res.data.status === 'success') {
       setProducts(res.data.data.docs);
+      setLoadingProducts(false);
     }
   };
 
@@ -50,9 +53,13 @@ export default function Home() {
           </Heading>
 
           <Flex flexWrap="wrap" gridGap="1.5" justify="space-between">
-            {products.map(product => (
-              <ProductCard product={product} />
-            ))}
+            {loadingProducts ? (
+              <Box width="100%" textAlign="center">
+                <Spinner size="xl" />
+              </Box>
+            ) : (
+              products.map(product => <ProductCard product={product} />)
+            )}
           </Flex>
         </Container>
       </Box>
