@@ -50,7 +50,7 @@ function ProductCard({ product }) {
     >
       <Image
         css={{ transition: 'all 250ms linear' }}
-        src={thumbnail}
+        src={`${process.env.REACT_APP_API_URL}/img/products/${thumbnail}`}
         alt={`Picture of ${name}`}
         roundedTop="lg"
       />

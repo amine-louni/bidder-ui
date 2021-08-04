@@ -12,11 +12,12 @@ import Register from './views/Register';
 import Product from './views/Product';
 import Sell from './views/Sell';
 import './style.css';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 function App() {
   return (
-    <ChakraProvider theme={theme}>
-      <UserProvider>
+    <UserProvider>
+      <ChakraProvider theme={theme}>
         <div className="App">
           <ToastContainer
             position="top-right"
@@ -39,8 +40,8 @@ function App() {
             </Switch>
           </BrowserRouter>
         </div>
-      </UserProvider>
-    </ChakraProvider>
+      </ChakraProvider>
+    </UserProvider>
   );
 }
 

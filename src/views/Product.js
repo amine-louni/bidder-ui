@@ -19,6 +19,7 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Button,
+  Spinner,
 } from '@chakra-ui/react';
 import { Image, Input, List, ListIcon, ListItem } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
@@ -27,6 +28,7 @@ import { MinusIcon } from '@chakra-ui/icons';
 import { HiCheckCircle, HiClock } from 'react-icons/hi';
 import Countdown from 'react-countdown';
 import SellerCard from '../components/product/SellerCard';
+import ProductImages from '../components/product/ProductImages';
 
 const data = {
   isNew: true,
@@ -40,7 +42,7 @@ const data = {
 
 export default function Product() {
   let { id } = useParams();
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState('');
   const [loadingProduct, setLoadingProduct] = useState(true);
 
   useEffect(() => {
@@ -64,7 +66,7 @@ export default function Product() {
   return (
     <>
       <Navbar />
-      {!loadingProduct && (
+      {!loadingProduct && product ? (
         <>
           <Box bg="teal.900" color="white" py="6rem">
             <Container maxW="container.xl">
@@ -86,13 +88,14 @@ export default function Product() {
                   width={['100%', '100%', '100%', '34%']}
                   height={['600px', '600px', '600px', 'auto']}
                 >
-                  <Image
+                  <ProductImages images={product.images} />
+                  {/* <Image
                     rounded="lg"
                     boxSize="100%"
                     objectFit="contain"
-                    src={data.imageURL}
+                    src={`${process.env.REACT_APP_API_URL}/img/products/${product.thumbnail}`}
                     alt="Dan Abramov"
-                  />
+                  /> */}
                 </Box>
                 <Box width={['100%', '100%', '100%', '65%']}>
                   <Flex
@@ -182,10 +185,10 @@ export default function Product() {
                         The seller
                       </Heading>
                       <SellerCard
-                        firstName={product.user.firstName}
-                        lastName={product.user.lastName}
-                        avatar={product.user.avatar}
-                        email={product.user.email}
+                        firstName={product?.user?.firstName}
+                        lastName={product?.user?.lastName}
+                        avatar={product?.user?.avatar}
+                        email={product?.user?.email}
                       />
                     </Box>
                   </Flex>
@@ -194,6 +197,8 @@ export default function Product() {
             </Container>
           </Box>
         </>
+      ) : (
+        <Spinner size="lg" />
       )}
       <Footer />
     </>
