@@ -10,6 +10,10 @@ import {
   Text,
 } from '@chakra-ui/layout';
 import {
+  HiArrowCircleRight,
+  HiArrowRight,
+  HiChevronLeft,
+  HiChevronRight,
   HiFilter,
   HiOutlineCash,
   HiOutlineFilter,
@@ -19,21 +23,15 @@ import {
 } from 'react-icons/hi';
 import {
   Button,
-  FormControl,
-  FormLabel,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Select,
   Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
   Spinner,
-  Switch,
 } from '@chakra-ui/react';
+import ReactPaginate from 'react-paginate';
+
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 
@@ -42,14 +40,19 @@ export default function Products() {
   const handleChange = value => setValue(value);
 
   const [products, setProducts] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [page, setPage] = useState(1);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [category, setCategory] = React.useState('');
   const [tags, setTags] = useState([]);
-  const fetchProducts = async () => {
+  const LIMIT = 10;
+  const fetchProducts = async (currentPage = 1) => {
     setLoadingProducts(true);
     const res = await axios
       .get(
-        `${process.env.REACT_APP_API_URL}/api/v1/products/?currentPrice[lte]=${
+        `${
+          process.env.REACT_APP_API_URL
+        }/api/v1/products/?limit=${LIMIT}&page=${currentPage}&currentPrice[lte]=${
           value === 0 ? '100000' : value
         }${category ? `&category=${category}` : ''}`
       )
@@ -63,6 +66,22 @@ export default function Products() {
       setLoadingProducts(false);
     }
   };
+  const fetchProductsCount = async () => {
+    setLoadingProducts(true);
+    const res = await axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/api/v1/products/?&currentPrice[lte]=${
+          value === 0 ? '100000' : value
+        }${category ? `&category=${category}` : ''}`
+      )
+      .catch(function (error) {
+        console.log(error.response);
+      });
+    console.log(res, 'with out limit');
+    if (res.data.status === 'success') {
+      setPageCount(res.data.results);
+    }
+  };
   const fetchTags = async () => {
     const res = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/v1/categories`
@@ -72,6 +91,7 @@ export default function Products() {
   };
   useEffect(() => {
     fetchProducts();
+    fetchProductsCount();
     fetchTags();
   }, []);
   return (
@@ -136,7 +156,9 @@ export default function Products() {
                 onChange={value => setCategory(value.target.value)}
               >
                 {tags.map(tag => (
-                  <option value={tag._id}>{tag.name}</option>
+                  <option key={tag.id} value={tag._id}>
+                    {tag.name}
+                  </option>
                 ))}
               </Select>
 
@@ -155,6 +177,18 @@ export default function Products() {
               p="2rem"
               width={['100%', '100%', '100%', '72%']}
             >
+              <Box className="react-paginate">
+                <ReactPaginate
+                  pageCount={Math.ceil(pageCount / LIMIT)}
+                  containerClassName={'pagination'}
+                  onPageChange={page => {
+                    fetchProducts(page.selected + 1);
+                  }}
+                  activeClassName={'active'}
+                  nextLabel={<HiChevronRight />}
+                  previousLabel={<HiChevronLeft />}
+                />
+              </Box>
               <Flex flexWrap="wrap" gridGap="1">
                 {loadingProducts ? (
                   <Box width="100%" textAlign="center">
@@ -162,7 +196,11 @@ export default function Products() {
                   </Box>
                 ) : (
                   products.map(product => (
-                    <ProductCard product={product} compact={true} />
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      compact={true}
+                    />
                   ))
                 )}
               </Flex>
