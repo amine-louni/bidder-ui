@@ -6,10 +6,7 @@ export default function ProductImages({ images }) {
     <Carousel autoPlay={false}>
       {images.map(image => (
         <div>
-          <img
-            alt=""
-            src={`${process.env.REACT_APP_API_URL}/img/products/${image}`}
-          />
+          <img alt="" src={image} />
         </div>
       ))}
     </Carousel>

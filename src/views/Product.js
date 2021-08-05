@@ -29,6 +29,7 @@ import { HiCheckCircle, HiClock } from 'react-icons/hi';
 import Countdown from 'react-countdown';
 import SellerCard from '../components/product/SellerCard';
 import ProductImages from '../components/product/ProductImages';
+import { toast } from 'react-toastify';
 
 const data = {
   isNew: true,
@@ -44,7 +45,9 @@ export default function Product() {
   let { id } = useParams();
   const [product, setProduct] = useState('');
   const [loadingProduct, setLoadingProduct] = useState(true);
-
+  const [bid, setBid] = useState('');
+  const [loadingBid, setLoadingBid] = useState(false);
+  const acesssToken = localStorage.getItem('user-token');
   useEffect(() => {
     if (id) {
       const fetchProduct = async () => {
@@ -58,11 +61,39 @@ export default function Product() {
         if (res.data.status === 'success') {
           setProduct(res.data.data);
           setLoadingProduct(false);
+          setBid(res.data.data.currentPrice);
         }
       };
       fetchProduct();
     }
   }, [id]);
+
+  const handleBid = async () => {
+    ///api/v1/products/6107b9dadcda78274c7eb2ea/bids/
+    console.log('bid is', bid);
+    setLoadingBid(true);
+    const res = await axios
+      .patch(
+        `${process.env.REACT_APP_API_URL}/api/v1/products/${id}/bids/`,
+        { amount: bid },
+        {
+          headers: {
+            Authorization: `Bearer ${acesssToken}`,
+          },
+        }
+      )
+      .catch(function (error) {
+        console.log(error.response);
+        toast.error(error.response.data.message);
+        setLoadingBid(false);
+      });
+
+    if (res?.data?.status === 'success') {
+      toast.success(`you bidded ${product.name} with ${bid} da`);
+      setLoadingBid(false);
+    }
+  };
+  console.log(product.currentPrice);
   return (
     <>
       <Navbar />
@@ -159,10 +190,12 @@ export default function Product() {
                               Place your bid
                             </Text>
                             <NumberInput
-                              isRequired600
-                              defaultValue={product.currentPrice}
+                              isRequired
+                              step={100}
                               min={product.currentPrice}
                               clampValueOnBlur={false}
+                              value={bid}
+                              onChange={value => setBid(parseInt(value))}
                             >
                               <NumberInputField />
                               <NumberInputStepper>
@@ -171,7 +204,13 @@ export default function Product() {
                               </NumberInputStepper>
                             </NumberInput>
                           </Flex>
-                          <Button isFullWidth colorScheme="blue">
+                          <Button
+                            isLoading={loadingBid}
+                            loadingText="Sending your bid"
+                            onClick={handleBid}
+                            isFullWidth
+                            colorScheme="blue"
+                          >
                             Submit
                           </Button>
                         </Box>

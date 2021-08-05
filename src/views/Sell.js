@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   AlertDescription,
@@ -15,7 +15,6 @@ import {
 import { Formik } from 'formik';
 import {
   InputControl,
-  ResetButton,
   SelectControl,
   SubmitButton,
   TextareaControl,
@@ -26,16 +25,16 @@ import Navbar from '../components/common/Navbar';
 import Footer from '../components/common/Footer';
 import { Box, Container, Heading } from '@chakra-ui/react';
 import { HiOutlineTrash } from 'react-icons/hi';
-import UploadThumbnail from '../components/sell/UploadThumbnail';
+
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import DeadDatePicker from '../components/sell/DeadDatePicker';
 import { useUser } from '../hooks/user';
 import UploadProductThumbnail from '../components/uploaders/UploadProductThumbnail';
+import UploadProductImages from '../components/uploaders/UploadProductImages';
 
 export default function Sell() {
-  const [files, setFiles] = useState([]);
   const [tags, setTags] = useState([]);
   const history = useHistory();
   const { user } = useUser();
@@ -58,6 +57,7 @@ export default function Sell() {
     category: '',
     description: '',
     thumbnail: '',
+    images: [],
   };
   const validationSchema = Yup.object({
     name: Yup.string().required('Required field !'),
@@ -65,19 +65,14 @@ export default function Sell() {
     category: Yup.string().required('Required field !'),
     description: Yup.string().required('Required field !'),
     deadDate: Yup.date().required('Required field !'),
-    thumbnail: Yup.mixed().required('Required field !'),
+    thumbnail: Yup.string().required('Required field !'),
+    images: Yup.array()
+      .required('Required field !')
+      .min(1, 'At least upload one image'),
   });
   const onSubmit = async values => {
-    const formData = new FormData();
-    formData.append('thumbnail', values.thumbnail);
-    formData.append('name', values.name);
-    formData.append('initialPrice', values.initialPrice);
-    formData.append('category', values.category);
-    formData.append('description', values.description);
-    formData.append('deadDate', values.deadDate);
-
     const res = await axios
-      .post(`${process.env.REACT_APP_API_URL}/api/v1/products`, formData, {
+      .post(`${process.env.REACT_APP_API_URL}/api/v1/products`, values, {
         headers: {
           Authorization: `Bearer ${acesssToken}`,
         },
@@ -89,36 +84,44 @@ export default function Sell() {
 
     if (res.data.status === 'success') {
       toast.success(`Product created !`);
+      history.push(`/products/${res.data.data.id}`);
     }
   };
 
   return (
     <div>
       <Navbar />
+      <Box bg="teal.900" color="white" py="6rem">
+        <Container maxW="container.xl">
+          <Heading
+            as="h2"
+            textTransform="capitalize"
+            size="xl"
+            fontWeight="medium"
+          >
+            Products / Add a product
+          </Heading>
+        </Container>
+      </Box>
       <Box as="section" my="5rem">
         <Container maxW="container.lg">
-          <Box
-            borderWidth="3px"
-            shadow="1px 1px 3px rgba(0,0,0,0.3)"
-            borderColor="gray.100"
-            p="3rem"
-            rounded="lg"
-          >
-            <Heading mb="1.5rem">Add a product</Heading>
-
+          <Box borderWidth="3px" borderColor="gray.100" p="3rem" rounded="lg">
             <Formik
+              validateOnBlur={false}
+              validateOnChange={false}
               initialValues={initialValues}
               onSubmit={onSubmit}
               validationSchema={validationSchema}
             >
-              {({
-                handleSubmit,
-                handleChange,
-                values,
-                errors,
-                setFieldValue,
-              }) => (
+              {({ handleSubmit, isValid, values, errors, setFieldValue }) => (
                 <Box m="10px auto" as="form" onSubmit={handleSubmit}>
+                  {!isValid && (
+                    <Alert mb="3" status="warning">
+                      <AlertIcon />
+                      <AlertTitle>Validation errors</AlertTitle>
+                      <AlertDescription></AlertDescription>
+                    </Alert>
+                  )}
                   <Flex justifyContent="space-between">
                     <Box width={['100%', '100%', '60%', '60%']}>
                       <InputControl
@@ -149,45 +152,48 @@ export default function Sell() {
                           value={values.deadDate}
                         />
                       </Box>
-                      <ButtonGroup>
-                        <SubmitButton>Submit</SubmitButton>
-                      </ButtonGroup>
 
+                      <SubmitButton isFullWidth py="1rem">
+                        Submit
+                      </SubmitButton>
+
+                      {/* 
                       <Box as="pre" marginY={10}>
                         {JSON.stringify(values, null, 2)}
                         <br />
                         {JSON.stringify(errors, null, 2)}
-                      </Box>
+                      </Box> */}
                     </Box>
                     <Box width={['100%', '100%', '35%', '35%']}>
                       <Heading
                         textTransform="capitalize"
                         fontWeight="semibold"
-                        size="sm"
+                        size="md"
+                        mb="1.5rem"
                       >
-                        Upload your product thumbanil
+                        Media
                       </Heading>
-                      <Text color="red.400" mb="3rem">
-                        Please make sure it's clear enough{' '}
-                      </Text>
+                      <Alert mb="1.5rem">
+                        <AlertIcon />
+                        <AlertTitle mr={2}> Upload 1 image </AlertTitle>
+                      </Alert>
+                      {!values.thumbnail && (
+                        <UploadProductThumbnail
+                          error={errors.thumbnail}
+                          filled={values.thumbnail}
+                          setFieldValue={setFieldValue}
+                        />
+                      )}
                       {errors.thumbnail && (
                         <Alert status="error">
                           <AlertIcon />
                           <AlertTitle mr={2}>Required</AlertTitle>
                         </Alert>
                       )}
-                      {files.length === 0 && (
-                        <UploadThumbnail
-                          setFiles={setFiles}
-                          setFieldValue={setFieldValue}
-                        />
-                      )}
-                      <UploadProductThumbnail setFieldValue={setFieldValue} />
-                      {files.length > 0 && (
+                      {values.thumbnail && (
                         <>
                           <Button
                             onClick={() => {
-                              setFiles([]);
                               setFieldValue('thumbnail', '');
                             }}
                             leftIcon={<HiOutlineTrash />}
@@ -198,12 +204,27 @@ export default function Sell() {
                             Delete the thumbnail
                           </Button>
                           <Image
-                            src={files[0].preview}
+                            src={values.thumbnail}
                             rounded="lg"
                             width="100%"
                           />
                         </>
                       )}
+                      <Alert>
+                        <AlertIcon />
+                        <AlertTitle mr={2}> Upload up to 4 images</AlertTitle>
+                      </Alert>
+                      {errors.images && (
+                        <Alert status="error">
+                          <AlertIcon />
+                          <AlertTitle mr={2}>Required</AlertTitle>
+                        </Alert>
+                      )}
+                      <UploadProductImages
+                        completed={values.images === 4}
+                        errors={errors.images}
+                        setFieldValue={setFieldValue}
+                      />
                     </Box>
                   </Flex>
                 </Box>
