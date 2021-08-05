@@ -43,6 +43,7 @@ export default function Products() {
 
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  const [category, setCategory] = React.useState('');
   const [tags, setTags] = useState([]);
   const fetchProducts = async () => {
     setLoadingProducts(true);
@@ -50,7 +51,7 @@ export default function Products() {
       .get(
         `${process.env.REACT_APP_API_URL}/api/v1/products/?currentPrice[lte]=${
           value === 0 ? '100000' : value
-        }`
+        }${category ? `&category=${category}` : ''}`
       )
       .catch(function (error) {
         console.log(error.response);
@@ -132,6 +133,7 @@ export default function Products() {
                 name="category"
                 borderColor="teal"
                 placeholder="Select a cateogry"
+                onChange={value => setCategory(value.target.value)}
               >
                 {tags.map(tag => (
                   <option value={tag._id}>{tag.name}</option>
