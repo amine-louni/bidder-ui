@@ -12,6 +12,7 @@ import { UserProvider } from './context/UserContext';
 import Register from './views/Register';
 import Product from './views/Product';
 import Sell from './views/Sell';
+import Products from './views/Products';
 import './style.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
@@ -37,6 +38,7 @@ function App() {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/sell" component={Sell} />
+              <Route exact path="/products" component={Products} />
               <Route exact path="/products/:id" component={Product} />
             </Switch>
           </BrowserRouter>

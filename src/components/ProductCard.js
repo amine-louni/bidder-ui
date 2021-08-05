@@ -20,7 +20,7 @@ import {
 } from 'react-icons/hi';
 import Countdown from 'react-countdown';
 
-function ProductCard({ product }) {
+function ProductCard({ product, compact }) {
   const {
     name,
     _id,
@@ -35,12 +35,11 @@ function ProductCard({ product }) {
       as={BrowserLink}
       to={`/products/${_id}`}
       bg={useColorModeValue('white', 'gray.800')}
-      width={['100%', '46%', '38%', '38%']}
-      maxW="sm"
       borderWidth="2px"
       rounded="lg"
       position="relative"
       cursor="pointer"
+      width={['100%', '100%', '33%', '33%']}
       overflow="hidden"
       _hover={{
         '& img': {
@@ -48,13 +47,18 @@ function ProductCard({ product }) {
         },
       }}
     >
-      <Image
-        css={{ transition: 'all 250ms linear' }}
-        src={thumbnail}
-        alt={`Picture of ${name}`}
-        roundedTop="lg"
-      />
-
+      <Box height="200px" overflow="hidden">
+        <Image
+          css={{ transition: 'all 250ms linear' }}
+          src={thumbnail}
+          objectFit="cover"
+          height="100%"
+          width="100%"
+          objectPosition="center center"
+          alt={`Picture of ${name}`}
+          roundedTop="lg"
+        />
+      </Box>
       <Box p="6" bg="gray.100">
         <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="red">
           {category.name}
@@ -72,32 +76,37 @@ function ProductCard({ product }) {
             {name}
           </Box>
         </Flex>
-        <List spacing={3}>
-          <ListItem>
-            <ListIcon as={MinusIcon} color="green.500" />
-            <Badge>initial Price: {initialPrice.toFixed(2)} DA</Badge>
-          </ListItem>
-          <ListItem>
-            <ListIcon as={HiCheckCircle} color="green.500" />
-            <Badge colorScheme="green.300">
-              current Price: {currentPrice.toFixed(2)} DA
-            </Badge>
-          </ListItem>
-          <ListItem>
-            <ListIcon as={HiClock} color="green.500" />
-            <Badge colorScheme="yellow">
-              <Countdown
-                renderer={props => (
-                  <Text>
-                    {props.days} days | {props.hours}:{props.minutes} :
-                    {props.seconds}
-                  </Text>
-                )}
-                date={deadDate}
-              />
-            </Badge>
-          </ListItem>
-        </List>
+        {compact && (
+          <Text fontWeight="semibold">{product.currentPrice} DA</Text>
+        )}
+        {!compact && (
+          <List spacing={3}>
+            <ListItem>
+              <ListIcon as={MinusIcon} color="green.500" />
+              <Badge>initial Price: {initialPrice.toFixed(2)} DA</Badge>
+            </ListItem>
+            <ListItem>
+              <ListIcon as={HiCheckCircle} color="green.500" />
+              <Badge colorScheme="green.300">
+                current Price: {currentPrice.toFixed(2)} DA
+              </Badge>
+            </ListItem>
+            <ListItem>
+              <ListIcon as={HiClock} color="green.500" />
+              <Badge colorScheme="yellow">
+                <Countdown
+                  renderer={props => (
+                    <Text>
+                      {props.days} days | {props.hours}:{props.minutes} :
+                      {props.seconds}
+                    </Text>
+                  )}
+                  date={deadDate}
+                />
+              </Badge>
+            </ListItem>
+          </List>
+        )}
       </Box>
     </Box>
   );
