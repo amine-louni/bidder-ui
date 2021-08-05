@@ -32,6 +32,7 @@ import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import DeadDatePicker from '../components/sell/DeadDatePicker';
 import { useUser } from '../hooks/user';
+import UploadProductThumbnail from '../components/uploaders/UploadProductThumbnail';
 
 export default function Sell() {
   const [files, setFiles] = useState([]);
@@ -181,7 +182,7 @@ export default function Sell() {
                           setFieldValue={setFieldValue}
                         />
                       )}
-
+                      <UploadProductThumbnail setFieldValue={setFieldValue} />
                       {files.length > 0 && (
                         <>
                           <Button
