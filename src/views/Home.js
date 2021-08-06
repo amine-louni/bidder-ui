@@ -12,7 +12,7 @@ export default function Home() {
   const [loadingProducts, setLoadingProducts] = useState(true);
   const fetchProducts = async () => {
     const res = await axios
-      .get(`${process.env.REACT_APP_API_URL}/api/v1/products`, {})
+      .get(`${process.env.REACT_APP_API_URL}/api/v1/products?limit=3`, {})
       .catch(function (error) {
         console.log(error.response);
         setLoadingProducts(false);
@@ -52,7 +52,7 @@ export default function Home() {
             </Text>
           </Heading>
 
-          <Flex flexWrap="wrap" gridGap="1.5" justify="space-between">
+          <Flex flexWrap="wrap" gridGap="1">
             {loadingProducts ? (
               <Box width="100%" textAlign="center">
                 <Spinner size="xl" />

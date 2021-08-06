@@ -23,10 +23,12 @@ import { useUser } from '../../hooks/user';
 
 const Links = ['Home', 'About', 'Products'];
 
-const NavLink = ({ children }) => (
+const NavLink = ({ children, to }) => (
   <Link
     px={2}
     py={1}
+    as={BrowserLink}
+    to={to}
     fontWeight="bold"
     textTransform="uppercase"
     rounded={'md'}
@@ -83,9 +85,12 @@ export default function Simple() {
                 spacing={4}
                 display={{ base: 'none', md: 'flex' }}
               >
-                {Links.map(link => (
-                  <NavLink key={link}>{link}</NavLink>
-                ))}
+                <NavLink to="/" as={BrowserLink}>
+                  Home
+                </NavLink>
+                <NavLink to="/products" as={BrowserLink}>
+                  Products
+                </NavLink>
               </HStack>
             </HStack>
             <Flex alignItems={'center'}>

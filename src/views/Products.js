@@ -41,12 +41,12 @@ export default function Products() {
 
   const [products, setProducts] = useState([]);
   const [pageCount, setPageCount] = useState(0);
-  const [page, setPage] = useState(1);
+
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [category, setCategory] = React.useState('');
   const [tags, setTags] = useState([]);
-  const LIMIT = 10;
-  const fetchProducts = async (currentPage = 1) => {
+  const LIMIT = 2;
+  const fetchProducts = async (currentPage = 1, sort = 'name') => {
     setLoadingProducts(true);
     const res = await axios
       .get(
@@ -54,7 +54,7 @@ export default function Products() {
           process.env.REACT_APP_API_URL
         }/api/v1/products/?limit=${LIMIT}&page=${currentPage}&currentPrice[lte]=${
           value === 0 ? '100000' : value
-        }${category ? `&category=${category}` : ''}`
+        }${category ? `&category=${category}` : ''}&sort=${sort}`
       )
       .catch(function (error) {
         console.log(error.response);
@@ -179,7 +179,7 @@ export default function Products() {
             >
               <Box className="react-paginate">
                 <ReactPaginate
-                  pageCount={Math.ceil(pageCount / LIMIT)}
+                  pageCount={pageCount > 0 ? Math.ceil(pageCount / LIMIT) : 1}
                   containerClassName={'pagination'}
                   onPageChange={page => {
                     fetchProducts(page.selected + 1);
@@ -189,6 +189,32 @@ export default function Products() {
                   previousLabel={<HiChevronLeft />}
                 />
               </Box>
+              <Flex gridGap=".5rem" alignItems="center" marginBottom="2rem">
+                <Text>Product found ({pageCount})</Text>
+                <Box flexGrow="1">
+                  <Divider size="xl" colorScheme="blue" />
+                </Box>
+                <Box>
+                  <Box>
+                    <Select
+                      onChange={value => {
+                        fetchProducts(1, value.target.value);
+                      }}
+                      placeholder="Sort by"
+                    >
+                      <option value="currentPrice">price (lowest)</option>
+                      <option value="-currentPrice">price (highest)</option>
+                      <option value="name">name (a - z)</option>
+                      <option value="-name">name (z - a)</option>
+                    </Select>
+                  </Box>
+                </Box>
+              </Flex>
+              {products.length === 0 && (
+                <Heading size="md">
+                  Sorry, no products matched your search.
+                </Heading>
+              )}
               <Flex flexWrap="wrap" gridGap="1">
                 {loadingProducts ? (
                   <Box width="100%" textAlign="center">
