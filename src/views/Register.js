@@ -41,6 +41,7 @@ export default function Register() {
     firstName: '',
     lastName: '',
     email: '',
+    phoneNumber: '',
     password: '',
     passwordConfirm: '',
   };
@@ -48,6 +49,10 @@ export default function Register() {
     firstName: Yup.string().required().min(3).label('First name'),
     lastName: Yup.string().required().min(3).label('Last name'),
     email: Yup.string().email().required().label('Email field'),
+    phoneNumber: Yup.string()
+      .required()
+      .matches(/^(0)(5|6|7)[0-9]{8}$/, 'Please enter a valid phone number')
+      .label('Phone number'),
     password: Yup.string()
       .required()
       .min(6, {
@@ -106,14 +111,14 @@ export default function Register() {
               <Stack spacing={4}>
                 <InputControl
                   id="firstName"
-                  type="firstName"
+                  type="text"
                   name="firstName"
                   inputProps={{ placeholder: 'First Name' }}
                 />
 
                 <InputControl
                   id="lastName"
-                  type="lastName"
+                  type="text"
                   name="lastName"
                   inputProps={{ placeholder: 'Last Name' }}
                 />
@@ -123,17 +128,23 @@ export default function Register() {
                   type="email"
                   inputProps={{ placeholder: 'Email Address' }}
                 />
+                <InputControl
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="text"
+                  inputProps={{ placeholder: 'Phone number' }}
+                />
 
                 <InputControl
                   id="password"
-                  type="password"
+                  type="text"
                   name="password"
                   inputProps={{ placeholder: 'Password' }}
                 />
 
                 <InputControl
                   id="passwordConfirm"
-                  type="passwordConfirm"
+                  type="text"
                   name="passwordConfirm"
                   inputProps={{ placeholder: 'Confrim your Password' }}
                 />

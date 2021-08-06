@@ -34,10 +34,12 @@ import ReactPaginate from 'react-paginate';
 
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
+import { useUser } from '../hooks/user';
 
 export default function Products() {
   const [value, setValue] = React.useState(0);
   const handleChange = value => setValue(value);
+  const { user } = useUser();
 
   const [products, setProducts] = useState([]);
   const [pageCount, setPageCount] = useState(0);
@@ -52,7 +54,7 @@ export default function Products() {
       .get(
         `${
           process.env.REACT_APP_API_URL
-        }/api/v1/products/?limit=${LIMIT}&page=${currentPage}&currentPrice[lte]=${
+        }/api/v1/products/?closed=false&limit=${LIMIT}&page=${currentPage}&currentPrice[lte]=${
           value === 0 ? '100000' : value
         }${category ? `&category=${category}` : ''}&sort=${sort}`
       )
@@ -61,7 +63,7 @@ export default function Products() {
         setLoadingProducts(false);
       });
     console.log(res);
-    if (res.data.status === 'success') {
+    if (res?.data?.status === 'success') {
       setProducts(res.data.data.docs);
       setLoadingProducts(false);
     }
@@ -70,15 +72,17 @@ export default function Products() {
     setLoadingProducts(true);
     const res = await axios
       .get(
-        `${process.env.REACT_APP_API_URL}/api/v1/products/?&currentPrice[lte]=${
+        `${
+          process.env.REACT_APP_API_URL
+        }/api/v1/products/?closed=false&limit&currentPrice[lte]=${
           value === 0 ? '100000' : value
         }${category ? `&category=${category}` : ''}`
       )
       .catch(function (error) {
         console.log(error.response);
       });
-    console.log(res, 'with out limit');
-    if (res.data.status === 'success') {
+
+    if (res?.data?.status === 'success') {
       setPageCount(res.data.results);
     }
   };
@@ -86,8 +90,8 @@ export default function Products() {
     const res = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/v1/categories`
     );
-    console.log(res.data.data.docs);
-    setTags(res.data.data.docs);
+
+    setTags(res?.data?.data?.docs);
   };
   useEffect(() => {
     fetchProducts();
@@ -98,7 +102,7 @@ export default function Products() {
     <>
       <Navbar />
       <Box bg="teal.900" color="white" py="6rem">
-        <Container maxW="container.xl">
+        <Container maxW="container.lg">
           <Heading as="h2" size="xl" fontWeight="medium" display="flex">
             <HiShoppingBag /> All the products
           </Heading>
@@ -106,7 +110,7 @@ export default function Products() {
       </Box>
 
       <Box as="section" my="3rem">
-        <Container maxW="container.xl">
+        <Container maxW="container.lg">
           <Flex align="flex-start" wrap="wrap" justify="space-between">
             <Box
               mb="1rem"
@@ -163,7 +167,10 @@ export default function Products() {
               </Select>
 
               <Button
-                onClick={fetchProducts}
+                onClick={() => {
+                  fetchProducts();
+                  fetchProductsCount();
+                }}
                 mt="3rem"
                 colorScheme="blue"
                 isFullWidth
@@ -175,21 +182,16 @@ export default function Products() {
               mb="1rem"
               rounded="lg"
               p="2rem"
+              pt="0"
               width={['100%', '100%', '100%', '72%']}
             >
-              <Box className="react-paginate">
-                <ReactPaginate
-                  pageCount={pageCount > 0 ? Math.ceil(pageCount / LIMIT) : 1}
-                  containerClassName={'pagination'}
-                  onPageChange={page => {
-                    fetchProducts(page.selected + 1);
-                  }}
-                  activeClassName={'active'}
-                  nextLabel={<HiChevronRight />}
-                  previousLabel={<HiChevronLeft />}
-                />
-              </Box>
-              <Flex gridGap=".5rem" alignItems="center" marginBottom="2rem">
+              <Flex
+                gridGap=".5rem"
+                alignItems="center"
+                bg="gray.100"
+                p="1rem"
+                marginBottom="2rem"
+              >
                 <Text>Product found ({pageCount})</Text>
                 <Box flexGrow="1">
                   <Divider size="xl" colorScheme="blue" />
@@ -215,7 +217,7 @@ export default function Products() {
                   Sorry, no products matched your search.
                 </Heading>
               )}
-              <Flex flexWrap="wrap" gridGap="1">
+              <Flex flexWrap="wrap" justifyContent="space-between" gridGap="1">
                 {loadingProducts ? (
                   <Box width="100%" textAlign="center">
                     <Spinner size="xl" />
@@ -230,6 +232,18 @@ export default function Products() {
                   ))
                 )}
               </Flex>
+              <Box mt="2rem" className="react-paginate">
+                <ReactPaginate
+                  pageCount={pageCount > 0 ? Math.ceil(pageCount / LIMIT) : 1}
+                  containerClassName={'pagination'}
+                  onPageChange={page => {
+                    fetchProducts(page.selected + 1);
+                  }}
+                  activeClassName={'active'}
+                  nextLabel={<HiChevronRight />}
+                  previousLabel={<HiChevronLeft />}
+                />
+              </Box>
             </Box>
           </Flex>
         </Container>

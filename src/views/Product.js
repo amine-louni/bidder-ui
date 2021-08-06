@@ -22,7 +22,7 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { Image, Input, List, ListIcon, ListItem } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { MinusIcon } from '@chakra-ui/icons';
 import { HiCheckCircle, HiClock } from 'react-icons/hi';
@@ -30,6 +30,7 @@ import Countdown from 'react-countdown';
 import SellerCard from '../components/product/SellerCard';
 import ProductImages from '../components/product/ProductImages';
 import { toast } from 'react-toastify';
+import { useUser } from '../hooks/user';
 
 const data = {
   isNew: true,
@@ -47,6 +48,8 @@ export default function Product() {
   const [loadingProduct, setLoadingProduct] = useState(true);
   const [bid, setBid] = useState('');
   const [loadingBid, setLoadingBid] = useState(false);
+  const { user } = useUser();
+  const history = useHistory();
   const acesssToken = localStorage.getItem('user-token');
   useEffect(() => {
     if (id) {
@@ -58,7 +61,7 @@ export default function Product() {
             setLoadingProduct(false);
           });
         console.log(res);
-        if (res.data.status === 'success') {
+        if (res?.data?.status === 'success') {
           setProduct(res.data.data);
           setLoadingProduct(false);
           setBid(res.data.data.currentPrice);
@@ -70,27 +73,31 @@ export default function Product() {
 
   const handleBid = async () => {
     ///api/v1/products/6107b9dadcda78274c7eb2ea/bids/
-    console.log('bid is', bid);
-    setLoadingBid(true);
-    const res = await axios
-      .patch(
-        `${process.env.REACT_APP_API_URL}/api/v1/products/${id}/bids/`,
-        { amount: bid },
-        {
-          headers: {
-            Authorization: `Bearer ${acesssToken}`,
-          },
-        }
-      )
-      .catch(function (error) {
-        console.log(error.response);
-        toast.error(error.response.data.message);
-        setLoadingBid(false);
-      });
+    if (!user._id) {
+      toast.warn('Please login before your place your bid');
+      history.push('/login');
+    } else {
+      setLoadingBid(true);
+      const res = await axios
+        .patch(
+          `${process.env.REACT_APP_API_URL}/api/v1/products/${id}/bids/`,
+          { amount: bid },
+          {
+            headers: {
+              Authorization: `Bearer ${acesssToken}`,
+            },
+          }
+        )
+        .catch(function (error) {
+          console.log(error.response);
+          toast.error(error.response.data.message);
+          setLoadingBid(false);
+        });
 
-    if (res?.data?.status === 'success') {
-      toast.success(`you bidded ${product.name} with ${bid} da`);
-      setLoadingBid(false);
+      if (res?.data?.status === 'success') {
+        toast.success(`you bidded ${product.name} with ${bid} da`);
+        setLoadingBid(false);
+      }
     }
   };
   console.log(product.currentPrice);

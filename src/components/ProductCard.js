@@ -11,6 +11,7 @@ import {
   ListItem,
   ListIcon,
   List,
+  Avatar,
 } from '@chakra-ui/react';
 import {
   HiCheck,
@@ -29,6 +30,7 @@ function ProductCard({ product, compact }) {
     category,
     currentPrice,
     deadDate,
+    user,
   } = product;
   return (
     <Box
@@ -39,16 +41,17 @@ function ProductCard({ product, compact }) {
       rounded="lg"
       position="relative"
       cursor="pointer"
-      width={['100%', '100%', '33%', '33%']}
+      width={['100%', '100%', '49%', '49%']}
       overflow="hidden"
       _hover={{
-        '& img': {
+        '& .thumbnail': {
           transform: 'scale(1.1)',
         },
       }}
     >
       <Box height="200px" overflow="hidden">
         <Image
+          className="thumbnail"
           css={{ transition: 'all 250ms linear' }}
           src={thumbnail}
           objectFit="cover"
@@ -106,6 +109,19 @@ function ProductCard({ product, compact }) {
               </Badge>
             </ListItem>
           </List>
+        )}
+        {compact && (
+          <Flex align="center" mt="1rem" bg="white" p="3" rounded="md">
+            <Avatar
+              borderColor="teal"
+              size={'xs'}
+              mr=".3rem"
+              src={`https://${user?.avatar}`}
+            />
+            <Text fontSize="14px">
+              {user?.firstName} {user?.lastName}
+            </Text>
+          </Flex>
         )}
       </Box>
     </Box>

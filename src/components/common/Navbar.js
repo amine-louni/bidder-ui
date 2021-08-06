@@ -20,6 +20,7 @@ import {
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 import { Link as BrowserLink, useHistory } from 'react-router-dom';
 import { useUser } from '../../hooks/user';
+import { HiUser } from 'react-icons/hi';
 
 const Links = ['Home', 'About', 'Products'];
 
@@ -124,7 +125,13 @@ export default function Simple() {
                         Sell
                       </MenuItem>
                       <MenuDivider />
-                      <MenuItem fontWeight="medium">My Profile</MenuItem>
+                      <MenuItem
+                        as={BrowserLink}
+                        to="/profile"
+                        icon={<HiUser />}
+                      >
+                        My dashboard
+                      </MenuItem>
                       <MenuItem fontWeight="medium">Purchase List</MenuItem>
                       <MenuItem fontWeight="medium">My sellings List</MenuItem>
                       <MenuItem fontWeight="medium">My Pending </MenuItem>
