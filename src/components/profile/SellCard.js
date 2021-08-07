@@ -20,10 +20,11 @@ import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-export default function SellCard({ product, sellings, setSellings }) {
+export default function SellCard({ product, fetchAll }) {
   const { user } = useUser();
   const storeToken = localStorage.getItem('user-token');
   const [deleting, setDeleting] = useState(false);
+  const [loadingConfirm, setLoadingConfirm] = useState(false);
   const deleteProduct = async productId => {
     setDeleting(true);
     const res = await axios
@@ -37,15 +38,39 @@ export default function SellCard({ product, sellings, setSellings }) {
       )
       .catch(function (error) {
         console.log(error.response);
-        toast.warn('product has been deleted');
+
+        toast.warn('Ops, please try again');
         setDeleting(false);
       });
     console.log(res);
     if (res?.status === 204) {
       setDeleting(false);
-      const newPendings = sellings.filter(product => product._id !== productId);
-      console.log(newPendings, 'new pendings.......');
-      setSellings(newPendings);
+      toast.success('product has been deleted');
+      fetchAll();
+    }
+  };
+  //{{URL}}/api/v1/products/6107b9dadcda78274c7eb2ea/bids/6106a6885ce7712fd81985ea
+  const confirmBid = async (productId, userId) => {
+    setLoadingConfirm(true);
+    const res = await axios
+      .patch(
+        `${process.env.REACT_APP_API_URL}/api/v1/products/${productId}/bids/${userId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${storeToken}`,
+          },
+        }
+      )
+      .catch(function (error) {
+        console.log(error.response);
+        toast.error(error.response.data.message);
+        setLoadingConfirm(false);
+      });
+    console.log(res);
+    if (res?.data?.status === 'success') {
+      setLoadingConfirm(false);
+      fetchAll();
     }
   };
   return (
@@ -125,6 +150,7 @@ export default function SellCard({ product, sellings, setSellings }) {
                     align="center"
                     mt="1rem"
                     bg="white"
+                    key={product._id}
                     p="3"
                     rounded="md"
                   >
@@ -141,7 +167,14 @@ export default function SellCard({ product, sellings, setSellings }) {
                       ({bid?.amount} DA)
                     </Text>
                     <Box flex="1" textAlign="right">
-                      <Button>Confirm</Button>
+                      <Button
+                        colorScheme="blue"
+                        isLoading={loadingConfirm}
+                        loadingText="confirming"
+                        onClick={() => confirmBid(product._id, bid.user._id)}
+                      >
+                        Accept the bid
+                      </Button>
                     </Box>
                   </Flex>
                 );

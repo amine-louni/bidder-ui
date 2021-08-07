@@ -130,7 +130,7 @@ export default function Simple() {
                         to="/profile"
                         icon={<HiUser />}
                       >
-                        My dashboard
+                        My Profile
                       </MenuItem>
                       <MenuItem fontWeight="medium">Purchase List</MenuItem>
                       <MenuItem fontWeight="medium">My sellings List</MenuItem>

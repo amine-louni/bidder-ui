@@ -5,17 +5,23 @@ import Countdown from 'react-countdown';
 import { useUser } from '../../hooks/user';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { HiPhone } from 'react-icons/hi';
 
-export default function SmallProductCard({ product, fetchAll }) {
+export default function AcceptedSellingBidCard({ product, fetchAll }) {
   const { user } = useUser();
   const storeToken = localStorage.getItem('user-token');
   //{{URL}}/api/v1/products/bids/6106958479ac3c30c4030cb7
-  const [deleting, setDeleting] = useState(false);
-  const deleteBid = async productId => {
-    setDeleting(true);
+  const [confirm, setConfirm] = useState(false);
+
+  console.log(product, 'AcceptedSellingBidCard');
+
+  //{{URL}}/api/v1/products/6107b9dadcda78274c7eb2ea
+  const markAsSold = async productId => {
+    setConfirm(true);
     const res = await axios
-      .delete(
-        `${process.env.REACT_APP_API_URL}/api/v1/products/${productId}/bids`,
+      .patch(
+        `${process.env.REACT_APP_API_URL}/api/v1/products/${productId}`,
+        { sold: true },
         {
           headers: {
             Authorization: `Bearer ${storeToken}`,
@@ -25,19 +31,14 @@ export default function SmallProductCard({ product, fetchAll }) {
       .catch(function (error) {
         console.log(error.response);
         toast.error(error.response.data.message);
-        setDeleting(false);
+        setConfirm(false);
       });
     console.log(res);
-    if (res?.status === 204) {
-      setDeleting(false);
+    if (res?.data?.status === 'success') {
+      setConfirm(false);
       fetchAll();
     }
   };
-
-  const bidAmountArray = product?.bids?.filter(
-    bid => bid.user._id === user._id
-  );
-  const bidAmount = bidAmountArray.length > 0 ? bidAmountArray[0].amount : '';
   return (
     <div>
       <Flex mb="2rem">
@@ -52,13 +53,22 @@ export default function SmallProductCard({ product, fetchAll }) {
         <Box>
           <Text fontWeight="semibold">{product.name}</Text>
           <Badge>{product.category.name}</Badge>
-          <Text fontSize="14px">
-            Bidded Price : <Badge>{bidAmount} DA</Badge>{' '}
-          </Text>
+
           <Text fontSize="14px">
             Current price : <Badge>{product.currentPrice} DA</Badge>
           </Text>
-
+          <Text fontSize="14px">
+            Buyer : {product.buyer.firstName} {product.buyer.lastName}
+          </Text>
+          <Text fontSize="14px">
+            Phone :{' '}
+            <Badge>
+              {' '}
+              <a href={`tel:${product.buyer.phoneNumber}`}>
+                {product.buyer.phoneNumber}
+              </a>
+            </Badge>
+          </Text>
           <Badge colorScheme="yellow">
             <Countdown
               renderer={props => (
@@ -73,25 +83,25 @@ export default function SmallProductCard({ product, fetchAll }) {
         </Box>
         <Box textAlign="right" flexGrow="1">
           <Button
-            as={BrowserLink}
-            to={`/products/${product._id}`}
-            width="9rem"
+            width="11rem"
+            loadingText="Marking ..."
+            isLoading={confirm}
+            onClick={() => markAsSold(product._id)}
             mb=".5rem"
           >
-            View more
+            Mark as sold
           </Button>{' '}
           <br />
           <Button
-            isLoading={deleting}
-            loadingText="Deleting .."
-            onClick={() => {
-              deleteBid(product._id);
-            }}
-            width="9rem"
-            colorScheme="red"
+            as="a"
+            href={`tel:${product.buyer.phoneNumber}`}
+            leftIcon={<HiPhone />}
+            colorScheme="green"
+            width="11rem"
+            mb=".5rem"
           >
-            Delete bid
-          </Button>
+            Call
+          </Button>{' '}
         </Box>
       </Flex>
     </div>
