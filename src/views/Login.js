@@ -19,22 +19,24 @@ import { useHistory } from 'react-router-dom';
 import { useUser } from '../hooks/user';
 import LoginImg from '../assets/undraw_Connected_re_lmq2.svg';
 
-export default function Register() {
+export default function Login() {
   const history = useHistory();
-  const { setUserAndToken } = useUser();
+  const { setUserAndToken, setUserLoading } = useUser();
   const onSubmit = async values => {
-    console.log('submit');
+    setUserLoading(true);
     const res = await axios
       .post(`${process.env.REACT_APP_API_URL}/api/v1/users/login`, values)
       .catch(function (error) {
         console.log(error.response);
         toast.error(error.response.data.message);
+        setUserLoading(false);
       });
 
     if (res.data.status === 'success') {
-      toast.success(`Signup with success`);
-      history.goBack();
       setUserAndToken(res.data.data.user, res.data.token);
+      setUserLoading(false);
+      toast.success(`Login with success`);
+      history.push('/');
     }
   };
   const initialValues = {

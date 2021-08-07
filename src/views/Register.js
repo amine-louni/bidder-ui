@@ -21,20 +21,22 @@ import RegisterImg from '../assets/undraw_Mobile_posts_re_bpuw.svg';
 
 export default function Register() {
   const history = useHistory();
-  const { setUserAndToken } = useUser();
+  const { setUserAndToken, setUserLoading } = useUser();
   const onSubmit = async values => {
-    console.log('submit');
+    setUserLoading(true);
     const res = await axios
       .post(`${process.env.REACT_APP_API_URL}/api/v1/users/signup`, values)
       .catch(function (error) {
         console.log(error.response);
         toast.error(error.response.data.message);
+        setUserLoading(false);
       });
 
     if (res.data.status === 'success') {
       toast.success(`Signup with success`);
-      history.goBack();
+      history.push('/');
       setUserAndToken(res.data.data.user, res.data.token);
+      setUserLoading(false);
     }
   };
   const initialValues = {
