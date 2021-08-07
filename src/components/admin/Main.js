@@ -163,6 +163,23 @@ export default function Main() {
     console.log(res.data.data.docs);
     if (res?.data?.status === 'success') {
       setTags([...tags, res.data.data]);
+      toast.success('Category added');
+    }
+  };
+  const deleteCategory = async id => {
+    const res = await axios.delete(
+      `${process.env.REACT_APP_API_URL}/api/v1/categories/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${storeToken}`,
+        },
+      }
+    );
+
+    if (res?.status === 204) {
+      const newTags = tags.filter(tag => tag._id !== id);
+      setTags(newTags);
+      toast.warn('Category removed');
     }
   };
   useEffect(() => {
@@ -329,6 +346,7 @@ export default function Main() {
                   >
                     <Box>{tag.name}</Box>
                     <IconButton
+                      onClick={() => deleteCategory(tag._id)}
                       ml="2"
                       colorScheme="red"
                       size="sm"
