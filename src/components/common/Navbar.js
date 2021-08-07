@@ -122,7 +122,7 @@ export default function Simple() {
                         fontWeight="bold"
                         icon={<AddIcon />}
                       >
-                        Sell
+                        Add a product
                       </MenuItem>
                       <MenuDivider />
                       <MenuItem
@@ -132,10 +132,7 @@ export default function Simple() {
                       >
                         My Profile
                       </MenuItem>
-                      <MenuItem fontWeight="medium">Purchase List</MenuItem>
-                      <MenuItem fontWeight="medium">My sellings List</MenuItem>
-                      <MenuItem fontWeight="medium">My Pending </MenuItem>
-                      <MenuItem fontWeight="medium">My Confirmed bids</MenuItem>
+
                       <MenuDivider />
                       <MenuItem
                         fontWeight="bold"

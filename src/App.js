@@ -16,6 +16,7 @@ import Products from './views/Products';
 import './style.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Profile from './views/Profile';
+import PrivateRoute from './components/routes/PrivateRoute';
 
 function App() {
   return (
@@ -38,8 +39,9 @@ function App() {
               <Route exact path="/" component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              <Route exact path="/profile" component={Profile} />
-              <Route exact path="/sell" component={Sell} />
+              <PrivateRoute path="/profile" component={Profile} />
+              <PrivateRoute path="/sell" component={Sell} />
+
               <Route exact path="/products" component={Products} />
               <Route exact path="/products/:id" component={Product} />
             </Switch>

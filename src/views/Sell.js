@@ -92,7 +92,7 @@ export default function Sell() {
     <div>
       <Navbar />
       <Box bg="teal.900" color="white" py="6rem">
-        <Container maxW="container.xl">
+        <Container maxW="container.lg">
           <Heading
             as="h2"
             textTransform="capitalize"
