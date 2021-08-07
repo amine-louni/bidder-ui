@@ -1,15 +1,21 @@
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Container,
   Flex,
   Heading,
   HStack,
+  IconButton,
+  Input,
+  InputGroup,
+  InputRightElement,
   Text,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { HiTag, HiTrash } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 import Navbar from './Navbar';
 export default function Main() {
@@ -31,6 +37,8 @@ export default function Main() {
   const [purchaseHistoryLoading, setPurchaseHistoryLoading] = useState(false);
   const [expiredProducts, setExpiredProducts] = useState([]);
   const [expiredProductsLoading, setExpiredProductsLoading] = useState(false);
+
+  const [category, setCategory] = useState('');
 
   const storeToken = localStorage.getItem('user-token');
   const fetchPendings = async () => {
@@ -139,13 +147,31 @@ export default function Main() {
     console.log(res.data.data.docs);
     setTags(res.data.data.docs);
   };
-
+  //{{URL}}/api/v1/categories
+  const addCategory = async () => {
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/v1/categories`,
+      {
+        name: category,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${storeToken}`,
+        },
+      }
+    );
+    console.log(res.data.data.docs);
+    if (res?.data?.status === 'success') {
+      setTags([...tags, res.data.data]);
+    }
+  };
   useEffect(() => {
     fetchPendings();
     fetchAllUsers();
     fetchMarkedAsSold();
     fetchProducts();
     fetchExpiredProducts();
+    fetchTags();
   }, []);
   return (
     <div>
@@ -278,9 +304,39 @@ export default function Main() {
               </Heading>
 
               <Heading size="sm">Create a cateogry</Heading>
-              {tags.map(tag => (
-                <Text key={tag._id}>{tag.name}</Text>
-              ))}
+              <Flex align="center">
+                <InputGroup height="3rem" maxW="30rem" size="lg">
+                  <Input
+                    value={category}
+                    onChange={e => setCategory(e.target.value)}
+                    height="3rem"
+                    placeholder="Enter a category name"
+                  />
+                </InputGroup>
+                <Button height="3rem" onClick={addCategory} colorScheme="blue">
+                  Add a cateogry
+                </Button>
+              </Flex>
+              <Flex>
+                {tags.map(tag => (
+                  <Flex
+                    align="center"
+                    justify="center"
+                    mr="2"
+                    p="1rem"
+                    rounded="lg"
+                    bg="gray.100"
+                  >
+                    <Box>{tag.name}</Box>
+                    <IconButton
+                      ml="2"
+                      colorScheme="red"
+                      size="sm"
+                      icon={<HiTrash />}
+                    />
+                  </Flex>
+                ))}
+              </Flex>
             </Container>
           </Box>
         </Container>

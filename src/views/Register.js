@@ -17,7 +17,6 @@ import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 import { useUser } from '../hooks/user';
-import RegisterImg from '../assets/undraw_Mobile_posts_re_bpuw.svg';
 
 export default function Register() {
   const history = useHistory();
