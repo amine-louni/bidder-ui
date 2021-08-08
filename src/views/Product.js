@@ -20,12 +20,21 @@ import {
   NumberDecrementStepper,
   Button,
   Spinner,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Textarea,
 } from '@chakra-ui/react';
 import { Image, Input, List, ListIcon, ListItem } from '@chakra-ui/react';
 import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { MinusIcon } from '@chakra-ui/icons';
-import { HiCheckCircle, HiClock } from 'react-icons/hi';
+import { HiCheckCircle, HiClock, HiFlag } from 'react-icons/hi';
 import Countdown from 'react-countdown';
 import SellerCard from '../components/product/SellerCard';
 import ProductImages from '../components/product/ProductImages';
@@ -47,8 +56,10 @@ export default function Product() {
   const [product, setProduct] = useState('');
   const [loadingProduct, setLoadingProduct] = useState(true);
   const [bid, setBid] = useState('');
+  const [description, setDescription] = useState('');
   const [loadingBid, setLoadingBid] = useState(false);
   const { user } = useUser();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
   const acesssToken = localStorage.getItem('user-token');
   useEffect(() => {
@@ -100,7 +111,30 @@ export default function Product() {
       }
     }
   };
-  console.log(product.currentPrice);
+  // {{URL}}/api/v1/reports
+  const postReport = async productId => {
+    const res = await axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/api/v1/reports/`,
+        { description: description, product: productId },
+
+        {
+          headers: {
+            Authorization: `Bearer ${acesssToken}`,
+          },
+        }
+      )
+      .catch(function (error) {
+        console.log(error.response);
+        toast.error(error.response.data.message);
+        onClose();
+      });
+
+    if (res?.data?.status === 'success') {
+      toast.success(`you have reported ${product.name}`);
+      onClose();
+    }
+  };
   return (
     <>
       <Navbar />
@@ -127,13 +161,6 @@ export default function Product() {
                   height={['600px', '600px', '600px', 'auto']}
                 >
                   <ProductImages images={product.images} />
-                  {/* <Image
-                    rounded="lg"
-                    boxSize="100%"
-                    objectFit="contain"
-                    src={`${process.env.REACT_APP_API_URL}/img/products/${product.thumbnail}`}
-                    alt="Dan Abramov"
-                  /> */}
                 </Box>
                 <Box width={['100%', '100%', '100%', '65%']}>
                   <Flex
@@ -152,6 +179,7 @@ export default function Product() {
                         >
                           {product.name}
                         </Heading>
+
                         <Badge colorScheme="purple">
                           {product?.category?.name}
                         </Badge>
@@ -227,6 +255,9 @@ export default function Product() {
                       padding="1.5rem"
                       width={['100%', '100%', '39%', '39%']}
                     >
+                      <Button onClick={onOpen} mb="3rem" leftIcon={<HiFlag />}>
+                        Report
+                      </Button>
                       <Heading as="h3" size="md" fontWeight="semibold">
                         The seller
                       </Heading>
@@ -242,6 +273,31 @@ export default function Product() {
               </Flex>
             </Container>
           </Box>
+
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader display="flex" alignItems="center">
+                <HiFlag /> Report {product.name}
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Textarea
+                  onChange={e => setDescription(e.target.value)}
+                  placeholder="Can you please write us why would you report this product ..."
+                />
+              </ModalBody>
+
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                  Close
+                </Button>
+                <Button onClick={() => postReport(product._id)} variant="ghost">
+                  Submit
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </>
       ) : (
         <Spinner size="lg" />

@@ -17,8 +17,8 @@ export default function Home() {
         console.log(error.response);
         setLoadingProducts(false);
       });
-    console.log(res);
-    if (res.data.status === 'success') {
+ 
+    if (res?.data?.status === 'success') {
       setProducts(res.data.data.docs);
       setLoadingProducts(false);
     }
