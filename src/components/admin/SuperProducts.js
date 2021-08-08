@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../components/common/Navbar';
-import Footer from '../components/common/Footer';
+import Navbar from './Navbar';
+import Footer from '../common/Footer';
 import {
   Box,
   Container,
@@ -10,6 +10,7 @@ import {
   Text,
 } from '@chakra-ui/layout';
 import {
+  HiArchive,
   HiChevronLeft,
   HiChevronRight,
   HiOutlineCash,
@@ -19,40 +20,59 @@ import {
 } from 'react-icons/hi';
 import {
   Button,
+  FormControl,
+  FormLabel,
   Select,
   Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
+  Switch,
   Spinner,
 } from '@chakra-ui/react';
 import ReactPaginate from 'react-paginate';
 
 import axios from 'axios';
-import ProductCard from '../components/ProductCard';
-import { useUser } from '../hooks/user';
+import ProductCard from '../ProductCard';
+import { useUser } from '../../hooks/user';
+import { useParams } from 'react-router-dom';
 
-export default function Products() {
+export default function SuperProducts() {
   const [value, setValue] = React.useState(0);
   const handleChange = value => setValue(value);
   const { user } = useUser();
+  const storeToken = localStorage.getItem('user-token');
 
   const [products, setProducts] = useState([]);
   const [pageCount, setPageCount] = useState(0);
 
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [category, setCategory] = React.useState('');
+  const [isSold, setIsSold] = React.useState(null);
+  const [isExpired, setIsExpired] = React.useState(null);
+  const [isClosed, setIsClosed] = React.useState(true);
   const [tags, setTags] = useState([]);
   const LIMIT = 2;
+  const checkQuery = (prop, queryString) => {
+    return prop !== null ? `&${queryString}=${prop}` : '';
+  };
   const fetchProducts = async (currentPage = 1, sort = 'name') => {
     setLoadingProducts(true);
     const res = await axios
       .get(
         `${
           process.env.REACT_APP_API_URL
-        }/api/v1/products/?closed=false&limit=${LIMIT}&page=${currentPage}&currentPrice[lte]=${
+        }/api/v1/products/super/all-products/?limit=${LIMIT}&page=${currentPage}&currentPrice[lte]=${
           value === 0 ? '100000' : value
-        }${category ? `&category=${category}` : ''}&sort=${sort}`
+        }${category ? `&category=${category}` : ''}&sort=${sort}${checkQuery(
+          isClosed,
+          'closed'
+        )}${checkQuery(isExpired, 'expired')}${checkQuery(isSold, 'sold')}`,
+        {
+          headers: {
+            Authorization: `Bearer ${storeToken}`,
+          },
+        }
       )
       .catch(function (error) {
         console.log(error.response);
@@ -70,9 +90,17 @@ export default function Products() {
       .get(
         `${
           process.env.REACT_APP_API_URL
-        }/api/v1/products/?closed=false&limit&currentPrice[lte]=${
+        }/api/v1/products/super/all-products/?currentPrice[lte]=${
           value === 0 ? '100000' : value
-        }${category ? `&category=${category}` : ''}`
+        }${category ? `&category=${category}` : ''}${checkQuery(
+          isClosed,
+          'closed'
+        )}${checkQuery(isExpired, 'expired')}${checkQuery(isSold, 'sold')}`,
+        {
+          headers: {
+            Authorization: `Bearer ${storeToken}`,
+          },
+        }
       )
       .catch(function (error) {
         console.log(error.response);
@@ -100,7 +128,7 @@ export default function Products() {
       <Box bg="teal.900" color="white" py="6rem">
         <Container maxW="container.lg">
           <Heading as="h2" size="xl" fontWeight="medium" display="flex">
-            <HiShoppingBag /> All the products
+            <HiShoppingBag /> All the products (for admin view)
           </Heading>
         </Container>
       </Box>
@@ -161,7 +189,75 @@ export default function Products() {
                   </option>
                 ))}
               </Select>
-
+              <Heading
+                mt="2rem"
+                mb=".7rem"
+                display="flex"
+                size="sm"
+                fontWeight="medium"
+              >
+                <HiArchive />{' '}
+                <Text fontWeight="semibold" ml=".7rem">
+                  Cases
+                </Text>
+              </Heading>
+              <FormControl
+                mt="1rem"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <FormLabel mb="0">Closed ?</FormLabel>
+                <Switch
+                  isChecked={isClosed}
+                  onChange={() =>
+                    setIsClosed(prev => {
+                      if (prev) {
+                        return null;
+                      }
+                      return true;
+                    })
+                  }
+                />
+              </FormControl>
+              <FormControl
+                mt="1rem"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <FormLabel mb="0">Sold ?</FormLabel>
+                <Switch
+                  isChecked={isSold}
+                  onChange={() =>
+                    setIsSold(prev => {
+                      if (prev) {
+                        return null;
+                      }
+                      return true;
+                    })
+                  }
+                />
+              </FormControl>
+              <FormControl
+                mt="1rem"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <FormLabel mb="0">Expired ?</FormLabel>
+                <Switch
+                  isChecked={isExpired}
+                  onChange={() =>
+                    setIsExpired(prev => {
+                      if (prev) {
+                        return null;
+                      }
+                      return true;
+                    })
+                  }
+                />
+              </FormControl>
               <Button
                 onClick={() => {
                   fetchProducts();

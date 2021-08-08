@@ -20,6 +20,7 @@ import PrivateRoute from './components/routes/PrivateRoute';
 import PrivateAdminRoute from './components/routes/PrivateAdminRoute';
 import SuperLogin from './components/admin/SuperLogin';
 import Main from './components/admin/Main';
+import SuperProducts from './components/admin/SuperProducts';
 
 function App() {
   return (
@@ -50,7 +51,11 @@ function App() {
                 exact
                 component={Main}
               />
-
+              <PrivateAdminRoute
+                path="/super-products"
+                exact
+                component={SuperProducts}
+              />
               <Route exact path="/products" component={Products} />
               <Route exact path="/products/:id" component={Product} />
             </Switch>

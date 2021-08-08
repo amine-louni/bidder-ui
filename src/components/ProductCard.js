@@ -31,6 +31,9 @@ function ProductCard({ product, compact }) {
     currentPrice,
     deadDate,
     user,
+    expired,
+    sold,
+    closed,
   } = product;
   return (
     <Box
@@ -66,6 +69,22 @@ function ProductCard({ product, compact }) {
         <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="red">
           {category.name}
         </Badge>
+        <br />
+        {expired && (
+          <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="yellow">
+            EXPIRED
+          </Badge>
+        )}
+        {sold && (
+          <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="yellow">
+            sold
+          </Badge>
+        )}
+        {closed && (
+          <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="yellow">
+            closed
+          </Badge>
+        )}
         <Flex mt="1" justifyContent="space-between" alignContent="center">
           <Box
             textTransform="capitalize"

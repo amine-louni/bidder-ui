@@ -27,7 +27,6 @@ export default function Login() {
     const res = await axios
       .post(`${process.env.REACT_APP_API_URL}/api/v1/users/login`, values)
       .catch(function (error) {
-        console.log(error.response);
         toast.error(error.response.data.message);
         setUserLoading(false);
       });

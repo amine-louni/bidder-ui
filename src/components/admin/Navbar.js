@@ -86,7 +86,20 @@ export default function Navbar() {
                 as={'nav'}
                 spacing={4}
                 display={{ base: 'none', md: 'flex' }}
-              ></HStack>
+              >
+                <HStack
+                  as={'nav'}
+                  spacing={4}
+                  display={{ base: 'none', md: 'flex' }}
+                >
+                  <NavLink to="/admin-dashboard" as={BrowserLink}>
+                    Dashboard
+                  </NavLink>
+                  <NavLink to="/super-products" as={BrowserLink}>
+                    Manage products
+                  </NavLink>
+                </HStack>
+              </HStack>
             </HStack>
             <Flex alignItems={'center'}>
               {user?._id && (

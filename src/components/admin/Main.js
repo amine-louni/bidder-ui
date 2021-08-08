@@ -13,6 +13,7 @@ import {
   InputRightElement,
   Text,
 } from '@chakra-ui/react';
+import { Link as BrowserLink } from 'react-router-dom';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { HiTag, HiTrash } from 'react-icons/hi';
@@ -149,32 +150,39 @@ export default function Main() {
   };
   //{{URL}}/api/v1/categories
   const addCategory = async () => {
-    const res = await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/v1/categories`,
-      {
-        name: category,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${storeToken}`,
+    const res = await axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/api/v1/categories`,
+        {
+          name: category,
         },
-      }
-    );
-    console.log(res.data.data.docs);
+        {
+          headers: {
+            Authorization: `Bearer ${storeToken}`,
+          },
+        }
+      )
+      .catch(function (error) {
+        console.log(error.response);
+        toast.error(error.response.data.message);
+      });
+
     if (res?.data?.status === 'success') {
       setTags([...tags, res.data.data]);
       toast.success('Category added');
     }
   };
   const deleteCategory = async id => {
-    const res = await axios.delete(
-      `${process.env.REACT_APP_API_URL}/api/v1/categories/${id}`,
-      {
+    const res = await axios
+      .delete(`${process.env.REACT_APP_API_URL}/api/v1/categories/${id}`, {
         headers: {
           Authorization: `Bearer ${storeToken}`,
         },
-      }
-    );
+      })
+      .catch(function (error) {
+        console.log(error.response);
+        toast.error(error.response.data.message);
+      });
 
     if (res?.status === 204) {
       const newTags = tags.filter(tag => tag._id !== id);
@@ -216,6 +224,9 @@ export default function Main() {
               </Heading>
             </Box>
             <Box
+              to="/super-products"
+              as={BrowserLink}
+              _hover={{ bg: 'gray.100' }}
               borderColor="gray.400"
               borderWidth="1px"
               rounded="lg"
@@ -321,39 +332,49 @@ export default function Main() {
               </Heading>
 
               <Heading size="sm">Create a cateogry</Heading>
-              <Flex align="center">
-                <InputGroup height="3rem" maxW="30rem" size="lg">
-                  <Input
-                    value={category}
-                    onChange={e => setCategory(e.target.value)}
-                    height="3rem"
-                    placeholder="Enter a category name"
-                  />
-                </InputGroup>
-                <Button height="3rem" onClick={addCategory} colorScheme="blue">
-                  Add a cateogry
-                </Button>
-              </Flex>
-              <Flex>
-                {tags.map(tag => (
-                  <Flex
-                    align="center"
-                    justify="center"
-                    mr="2"
-                    p="1rem"
-                    rounded="lg"
-                    bg="gray.100"
-                  >
-                    <Box>{tag.name}</Box>
-                    <IconButton
-                      onClick={() => deleteCategory(tag._id)}
-                      ml="2"
-                      colorScheme="red"
-                      size="sm"
-                      icon={<HiTrash />}
-                    />
+              <Flex justify="space-between" flexWrap="wrap">
+                <Box w={['100%', '100%', '47%', '47%']}>
+                  <Flex align="center">
+                    <InputGroup height="3rem" maxW="30rem" size="lg">
+                      <Input
+                        value={category}
+                        onChange={e => setCategory(e.target.value)}
+                        height="3rem"
+                        placeholder="Enter a category name"
+                      />
+                    </InputGroup>
+                    <Button
+                      height="3rem"
+                      onClick={addCategory}
+                      colorScheme="blue"
+                    >
+                      +
+                    </Button>
                   </Flex>
-                ))}
+                </Box>
+                <Box w={['100%', '100%', '50%', '50%']}>
+                  <Flex flexWrap="wrap" justify="space-between">
+                    {tags.map(tag => (
+                      <Flex
+                        align="center"
+                        justify="center"
+                        m="3px"
+                        p=".5rem"
+                        rounded="lg"
+                        bg="gray.100"
+                      >
+                        <Box>{tag.name}</Box>
+                        <IconButton
+                          onClick={() => deleteCategory(tag._id)}
+                          ml="2"
+                          colorScheme="red"
+                          size="sm"
+                          icon={<HiTrash />}
+                        />
+                      </Flex>
+                    ))}
+                  </Flex>
+                </Box>
               </Flex>
             </Container>
           </Box>
