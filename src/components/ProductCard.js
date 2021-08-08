@@ -135,7 +135,7 @@ function ProductCard({ product, compact }) {
               borderColor="teal"
               size={'xs'}
               mr=".3rem"
-              src={`https://${user?.avatar}`}
+              src={`${user?.avatar}`}
             />
             <Text fontSize="14px">
               {user?.firstName} {user?.lastName}

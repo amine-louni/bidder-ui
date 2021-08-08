@@ -19,31 +19,23 @@ import React, { useEffect, useState } from 'react';
 import { HiTag, HiTrash } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 import Navbar from './Navbar';
+import BannedProductCard from './BannedProductCard';
 export default function Main() {
   //{{URL}}/api/v1/products/bids/pending
   const [pendings, setPendings] = useState([]);
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
   const [tags, setTags] = useState([]);
-  const [loadingPendings, setloadingPendings] = useState(false);
-  const [sellings, setSellings] = useState([]);
-  const [sellingsLoading, setLoadingSellings] = useState([]);
-  const [accptedBids, setAccptedBids] = useState([]);
-  const [accptedBidsLoading, setAccptedBidsLoading] = useState(false);
-  const [acceptedSellBids, setAcceptedSellBids] = useState([]);
-  const [acceptedSellBidsLoading, setAcceptedSellBidsLoading] = useState(false);
+  const [reports, setReports] = useState([]);
+
   const [markedAsSold, setMarkedAsSold] = useState([]);
-  const [markedAsSoldLoading, setMarkedAsSoldLoading] = useState(false);
-  const [purchaseHistory, setPurchaseHistory] = useState([]);
-  const [purchaseHistoryLoading, setPurchaseHistoryLoading] = useState(false);
+
   const [expiredProducts, setExpiredProducts] = useState([]);
-  const [expiredProductsLoading, setExpiredProductsLoading] = useState(false);
 
   const [category, setCategory] = useState('');
 
   const storeToken = localStorage.getItem('user-token');
   const fetchPendings = async () => {
-    setloadingPendings(true);
     const res = await axios
       .get(
         `${process.env.REACT_APP_API_URL}/api/v1/products/super/all-pendings`,
@@ -56,12 +48,10 @@ export default function Main() {
       .catch(function (error) {
         console.log(error.response);
         toast.error(error.response.data.message);
-        setloadingPendings(false);
       });
 
     if (res?.data?.status === 'success') {
       setPendings(res?.data?.data);
-      setloadingPendings(false);
     }
   };
   const fetchAllUsers = async () => {
@@ -81,7 +71,6 @@ export default function Main() {
     }
   };
   const fetchMarkedAsSold = async () => {
-    setMarkedAsSoldLoading(true);
     const res = await axios
       .get(
         `${process.env.REACT_APP_API_URL}/api/v1/products/super/all-products?sold=true`,
@@ -92,14 +81,11 @@ export default function Main() {
         }
       )
       .catch(function (error) {
-        setMarkedAsSoldLoading(false);
-
         toast.error(error.response.data.message);
       });
 
     if (res?.data?.status === 'success') {
       setMarkedAsSold(res?.data?.data.docs);
-      setMarkedAsSoldLoading(false);
     }
   };
 
@@ -147,6 +133,22 @@ export default function Main() {
     );
     console.log(res.data.data.docs);
     setTags(res.data.data.docs);
+  };
+
+  const fetchReports = async () => {
+    const res = await axios
+      .get(`${process.env.REACT_APP_API_URL}/api/v1/reports`, {
+        headers: {
+          Authorization: `Bearer ${storeToken}`,
+        },
+      })
+      .catch(function (error) {
+        toast.error(error.response.data.message);
+      });
+
+    if (res?.data?.status === 'success') {
+      setReports(res?.data?.data.docs);
+    }
   };
   //{{URL}}/api/v1/categories
   const addCategory = async () => {
@@ -197,6 +199,7 @@ export default function Main() {
     fetchProducts();
     fetchExpiredProducts();
     fetchTags();
+    fetchReports();
   }, []);
   return (
     <div>
@@ -302,7 +305,7 @@ export default function Main() {
                   return (
                     <HStack marginBottom="1.5rem" align="center">
                       <HStack>
-                        <Avatar src={'https://' + user.avatar} />
+                        <Avatar src={user.avatar} />
                         <Box>
                           <Text>
                             {user.firstName} {user.lastName}
@@ -376,6 +379,21 @@ export default function Main() {
                   </Flex>
                 </Box>
               </Flex>
+            </Container>
+          </Box>
+
+          <Box py="3rem">
+            <Container maxW="container.lg">
+              <Heading as="h2" mb="2rem" size="lg">
+                Reports
+              </Heading>
+
+              {reports.map(report => (
+                <BannedProductCard
+                  product={report?.product}
+                  reporter={report.user}
+                />
+              ))}
             </Container>
           </Box>
         </Container>

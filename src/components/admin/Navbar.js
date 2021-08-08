@@ -119,7 +119,7 @@ export default function Navbar() {
                         borderWidth="4px"
                         borderColor="teal"
                         size={'md'}
-                        src={`https://${user?.avatar}`}
+                        src={user?.avatar}
                       />
                     </MenuButton>
                     <MenuList>

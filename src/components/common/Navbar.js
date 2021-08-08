@@ -112,7 +112,7 @@ export default function Simple() {
                         borderWidth="4px"
                         borderColor="teal"
                         size={'md'}
-                        src={`https://${user?.avatar}`}
+                        src={user?.avatar}
                       />
                     </MenuButton>
                     <MenuList>

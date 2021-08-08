@@ -158,7 +158,7 @@ export default function SellCard({ product, fetchAll }) {
                       borderColor="teal"
                       size={'xs'}
                       mr=".7rem"
-                      src={`https://${bid?.user?.avatar}`}
+                      src={`${bid?.user?.avatar}`}
                     />
                     <Text>
                       {bid?.user?.firstName} {bid?.user?.lastName}

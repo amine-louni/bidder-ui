@@ -1,8 +1,8 @@
 import { Badge, Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import React from 'react';
-import { HiPhone } from 'react-icons/hi';
+import { HiFlag } from 'react-icons/hi';
 
-export default function AcceptedBuyBidCard({ product, fetchAll }) {
+export default function BannedProductCard({ product, fetchAll, reporter }) {
   return (
     <div>
       <Flex mb="2rem">
@@ -22,28 +22,18 @@ export default function AcceptedBuyBidCard({ product, fetchAll }) {
             Seller : {product?.user?.firstName} {product.user.lastName}
           </Text>
           <Text fontSize="14px">
-            Phone :{' '}
-            <Badge>
-              {' '}
-              <a href={`tel:${product.buyer.phoneNumber}`}>
-                {product?.buyer?.phoneNumber}
-              </a>
-            </Badge>
+            Reported by : {reporter?.firstName} {reporter?.lastName}
           </Text>
-          <Badge colorScheme="yellow">
-            Pending your contact to pay {product.currentPrice} DA
-          </Badge>
         </Box>
         <Box textAlign="right" flexGrow="1">
           <Button
             as="a"
-            href={`tel:${product.buyer.phoneNumber}`}
-            leftIcon={<HiPhone />}
+            leftIcon={<HiFlag />}
             colorScheme="green"
             width="11rem"
             mb=".5rem"
           >
-            Call
+            Ban
           </Button>{' '}
         </Box>
       </Flex>
