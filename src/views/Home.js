@@ -12,12 +12,12 @@ export default function Home() {
   const [loadingProducts, setLoadingProducts] = useState(true);
   const fetchProducts = async () => {
     const res = await axios
-      .get(`${process.env.REACT_APP_API_URL}/api/v1/products?limit=3`, {})
+      .get(`${process.env.REACT_APP_API_URL}/api/v1/products?limit=4`, {})
       .catch(function (error) {
         console.log(error.response);
         setLoadingProducts(false);
       });
- 
+
     if (res?.data?.status === 'success') {
       setProducts(res.data.data.docs);
       setLoadingProducts(false);

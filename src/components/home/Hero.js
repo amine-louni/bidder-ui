@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { HiShoppingCart } from 'react-icons/hi';
-
+import { Link as BrowserLink } from 'react-router-dom';
 export default function CallToActionWithVideo() {
   const MotionBox = motion(Box);
   const MotionImage = motion(Image);
@@ -68,6 +68,8 @@ export default function CallToActionWithVideo() {
               direction={{ base: 'column', sm: 'row' }}
             >
               <Button
+                as={BrowserLink}
+                to="/products"
                 rounded={'full'}
                 size={'lg'}
                 fontWeight={'bold'}

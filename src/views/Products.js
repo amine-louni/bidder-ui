@@ -15,10 +15,12 @@ import {
   HiOutlineCash,
   HiOutlineTicket,
   HiOutlineViewGrid,
+  HiSearch,
   HiShoppingBag,
 } from 'react-icons/hi';
 import {
   Button,
+  Input,
   Select,
   Slider,
   SliderFilledTrack,
@@ -33,6 +35,7 @@ import ProductCard from '../components/ProductCard';
 
 export default function Products() {
   const [value, setValue] = React.useState(0);
+  const [search, setSearch] = React.useState('');
   const handleChange = value => setValue(value);
 
   const [products, setProducts] = useState([]);
@@ -50,7 +53,7 @@ export default function Products() {
           process.env.REACT_APP_API_URL
         }/api/v1/products/?closed=false&limit=${LIMIT}&page=${currentPage}&currentPrice[lte]=${
           value === 0 ? '100000' : value
-        }${category ? `&category=${category}` : ''}&sort=${sort}`
+        }${category ? `&category=${category}` : ''}&sort=${sort}&q=${search}`
       )
       .catch(function (error) {
         console.log(error.response);
@@ -70,7 +73,7 @@ export default function Products() {
           process.env.REACT_APP_API_URL
         }/api/v1/products/?closed=false&limit&currentPrice[lte]=${
           value === 0 ? '100000' : value
-        }${category ? `&category=${category}` : ''}`
+        }${category ? `&category=${category}` : ''}&q=${search}`
       )
       .catch(function (error) {
         console.log(error.response);
@@ -116,8 +119,24 @@ export default function Products() {
               <Heading mb="2rem" display="flex" size="md" fontWeight="semibold">
                 <HiOutlineViewGrid /> <Text ml=".7rem">Filter</Text>
               </Heading>
-
               <Heading mb=".7rem" display="flex" size="sm" fontWeight="medium">
+                <HiSearch />{' '}
+                <Text fontWeight="semibold" ml=".7rem">
+                  Search
+                </Text>
+              </Heading>
+              <Input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search products"
+              />
+              <Heading
+                mb="0.7rem"
+                mt="2rem"
+                display="flex"
+                size="sm"
+                fontWeight="medium"
+              >
                 <HiOutlineCash />{' '}
                 <Text fontWeight="semibold" ml=".7rem">
                   Price
