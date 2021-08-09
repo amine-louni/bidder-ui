@@ -46,6 +46,7 @@ const NavLink = ({ children, to }) => (
 export default function Simple() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user, resetUser } = useUser();
+  console.log(user, 'user in navbar');
   const history = useHistory();
   const logOut = () => {
     resetUser();
@@ -112,7 +113,7 @@ export default function Simple() {
                         borderWidth="4px"
                         borderColor="teal"
                         size={'md'}
-                        src={user?.avatar}
+                        src={user.avatar}
                       />
                     </MenuButton>
                     <MenuList>

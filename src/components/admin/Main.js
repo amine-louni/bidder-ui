@@ -20,6 +20,7 @@ import { HiTag, HiTrash } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 import Navbar from './Navbar';
 import BannedProductCard from './BannedProductCard';
+
 export default function Main() {
   //{{URL}}/api/v1/products/bids/pending
   const [pendings, setPendings] = useState([]);
@@ -192,6 +193,33 @@ export default function Main() {
       toast.warn('Category removed');
     }
   };
+
+  const deleteUser = async id => {
+    const res = await axios
+      .delete(`${process.env.REACT_APP_API_URL}/api/v1/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${storeToken}`,
+        },
+      })
+      .catch(function (error) {
+        console.log(error.response);
+        toast.error(error.response.data.message);
+      });
+
+    if (res?.status === 204) {
+      toast.warn('User was deleted ...');
+      fetchAll();
+    }
+  };
+  const fetchAll = () => {
+    fetchPendings();
+    fetchAllUsers();
+    fetchMarkedAsSold();
+    fetchProducts();
+    fetchExpiredProducts();
+    fetchTags();
+    fetchReports();
+  };
   useEffect(() => {
     fetchPendings();
     fetchAllUsers();
@@ -300,6 +328,7 @@ export default function Main() {
               <Heading as="h2" size="lg">
                 Users
               </Heading>
+
               <Box height="70vh" overflow="auto">
                 {users.map(user => {
                   return (
@@ -313,11 +342,20 @@ export default function Main() {
                         </Box>
                       </HStack>
                       <Box flexGrow="1" textAlign="right">
-                        <Button width="10rem" colorScheme="red">
-                          Ban
+                        <Button
+                          onClick={() => deleteUser(user._id)}
+                          width="10rem"
+                          colorScheme="red"
+                        >
+                          Delete
                         </Button>
                         <br />
-                        <Button mt="7px" width="10rem">
+                        <Button
+                          // as={BrowserLink}
+                          // to={`/users/${user._id}`}
+                          mt="7px"
+                          width="10rem"
+                        >
                           View profile
                         </Button>
                       </Box>
@@ -387,11 +425,16 @@ export default function Main() {
               <Heading as="h2" mb="2rem" size="lg">
                 Reports
               </Heading>
-
+              {reports.length === 0 && (
+                <Heading size="md">There is no reports</Heading>
+              )}
               {reports.map(report => (
                 <BannedProductCard
                   product={report?.product}
-                  reporter={report.user}
+                  reporter={report?.user}
+                  description={report?.description}
+                  reportId={report?._id}
+                  fetchAll={fetchReports}
                 />
               ))}
             </Container>
