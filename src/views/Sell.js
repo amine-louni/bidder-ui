@@ -5,11 +5,8 @@ import {
   AlertIcon,
   AlertTitle,
   Button,
-  ButtonGroup,
-  CloseButton,
   Flex,
   Image,
-  Radio,
   Text,
 } from '@chakra-ui/react';
 import { Formik } from 'formik';
@@ -30,14 +27,13 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import DeadDatePicker from '../components/sell/DeadDatePicker';
-import { useUser } from '../hooks/user';
 import UploadProductThumbnail from '../components/uploaders/UploadProductThumbnail';
 import UploadProductImages from '../components/uploaders/UploadProductImages';
 
 export default function Sell() {
   const [tags, setTags] = useState([]);
   const history = useHistory();
-  const { user } = useUser();
+
   const acesssToken = localStorage.getItem('user-token');
   const fetchTags = async () => {
     const res = await axios.get(

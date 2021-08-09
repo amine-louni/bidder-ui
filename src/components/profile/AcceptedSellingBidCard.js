@@ -1,14 +1,13 @@
 import { Badge, Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { Link as BrowserLink } from 'react-router-dom';
+
 import Countdown from 'react-countdown';
-import { useUser } from '../../hooks/user';
+
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { HiPhone } from 'react-icons/hi';
 
 export default function AcceptedSellingBidCard({ product, fetchAll }) {
-  const { user } = useUser();
   const storeToken = localStorage.getItem('user-token');
   //{{URL}}/api/v1/products/bids/6106958479ac3c30c4030cb7
   const [confirm, setConfirm] = useState(false);

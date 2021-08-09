@@ -34,13 +34,11 @@ import ReactPaginate from 'react-paginate';
 
 import axios from 'axios';
 import ProductCard from '../ProductCard';
-import { useUser } from '../../hooks/user';
-import { useParams } from 'react-router-dom';
 
 export default function SuperProducts() {
   const [value, setValue] = React.useState(0);
   const handleChange = value => setValue(value);
-  const { user } = useUser();
+
   const storeToken = localStorage.getItem('user-token');
 
   const [products, setProducts] = useState([]);

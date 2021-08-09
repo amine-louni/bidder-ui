@@ -1,4 +1,4 @@
-import { Box, Button, Flex, IconButton, Image } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Image } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import { HiPlusCircle, HiTrash } from 'react-icons/hi';
 

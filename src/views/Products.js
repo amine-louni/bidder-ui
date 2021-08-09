@@ -30,12 +30,10 @@ import ReactPaginate from 'react-paginate';
 
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
-import { useUser } from '../hooks/user';
 
 export default function Products() {
   const [value, setValue] = React.useState(0);
   const handleChange = value => setValue(value);
-  const { user } = useUser();
 
   const [products, setProducts] = useState([]);
   const [pageCount, setPageCount] = useState(0);

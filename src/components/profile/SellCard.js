@@ -15,13 +15,11 @@ import {
 import React, { useState } from 'react';
 import { Link as BrowserLink } from 'react-router-dom';
 import Countdown from 'react-countdown';
-import { useUser } from '../../hooks/user';
-import { AddIcon, MinusIcon } from '@chakra-ui/icons';
+
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
 export default function SellCard({ product, fetchAll }) {
-  const { user } = useUser();
   const storeToken = localStorage.getItem('user-token');
   const [deleting, setDeleting] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState(false);

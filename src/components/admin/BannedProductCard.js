@@ -1,7 +1,7 @@
 import { Badge, Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { Link as BrowserLink } from 'react-router-dom';
-import { HiFlag, HiTrash } from 'react-icons/hi';
+import { HiTrash } from 'react-icons/hi';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 

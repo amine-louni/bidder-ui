@@ -1,44 +1,9 @@
-import { Badge, Box, Button, Flex, Image, Text } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { Link as BrowserLink } from 'react-router-dom';
-import Countdown from 'react-countdown';
-import { useUser } from '../../hooks/user';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { HiPhone } from 'react-icons/hi';
+import { Badge, Box, Flex, Image, Text } from '@chakra-ui/react';
+import React from 'react';
 
 export default function MarkedAsSoldCard({ product, fetchAll }) {
-  const { user } = useUser();
-  const storeToken = localStorage.getItem('user-token');
-  //{{URL}}/api/v1/products/bids/6106958479ac3c30c4030cb7
-  const [confirm, setConfirm] = useState(false);
-
   console.log(product, 'AcceptedSellingBidCard');
 
-  //{{URL}}/api/v1/products/6107b9dadcda78274c7eb2ea
-  const markAsSold = async productId => {
-    setConfirm(true);
-    const res = await axios
-      .patch(
-        `${process.env.REACT_APP_API_URL}/api/v1/products/${productId}`,
-        { sold: true },
-        {
-          headers: {
-            Authorization: `Bearer ${storeToken}`,
-          },
-        }
-      )
-      .catch(function (error) {
-        console.log(error.response);
-        toast.error(error.response.data.message);
-        setConfirm(false);
-      });
-    console.log(res);
-    if (res?.data?.status === 'success') {
-      setConfirm(false);
-      fetchAll();
-    }
-  };
   return (
     <div>
       <Flex mb="2rem">

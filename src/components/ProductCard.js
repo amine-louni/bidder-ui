@@ -2,7 +2,6 @@ import { MinusIcon } from '@chakra-ui/icons';
 import { Link as BrowserLink } from 'react-router-dom';
 import {
   Flex,
-  Circle,
   Box,
   Image,
   Badge,
@@ -13,12 +12,7 @@ import {
   List,
   Avatar,
 } from '@chakra-ui/react';
-import {
-  HiCheck,
-  HiCheckCircle,
-  HiClock,
-  HiOutlineCheckCircle,
-} from 'react-icons/hi';
+import { HiCheckCircle, HiClock } from 'react-icons/hi';
 import Countdown from 'react-countdown';
 
 function ProductCard({ product, compact }) {

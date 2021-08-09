@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DateTimePicker from 'react-datetime-picker';
 
 export default function DeadDatePicker({ setFieldValue, value }) {

@@ -8,8 +8,6 @@ import {
   Divider,
   Flex,
   Heading,
-  HStack,
-  Stack,
   Text,
 } from '@chakra-ui/layout';
 import {
@@ -30,7 +28,7 @@ import {
   ModalFooter,
   Textarea,
 } from '@chakra-ui/react';
-import { Image, Input, List, ListIcon, ListItem } from '@chakra-ui/react';
+import { List, ListIcon, ListItem } from '@chakra-ui/react';
 import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { MinusIcon } from '@chakra-ui/icons';
@@ -40,16 +38,6 @@ import SellerCard from '../components/product/SellerCard';
 import ProductImages from '../components/product/ProductImages';
 import { toast } from 'react-toastify';
 import { useUser } from '../hooks/user';
-
-const data = {
-  isNew: true,
-  imageURL:
-    'https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=4600&q=80',
-  name: 'Wayfarer Classic',
-  price: 4.5,
-  rating: 4.2,
-  numReviews: 34,
-};
 
 export default function Product() {
   let { id } = useParams();

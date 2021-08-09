@@ -1,5 +1,5 @@
 import { Flex, Spinner } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useUser } from '../../hooks/user';
 

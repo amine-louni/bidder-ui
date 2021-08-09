@@ -10,18 +10,15 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   useDisclosure,
   useColorModeValue,
   Stack,
   Container,
-  Text,
   Badge,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Link as BrowserLink, useHistory } from 'react-router-dom';
 import { useUser } from '../../hooks/user';
-import { HiUser } from 'react-icons/hi';
 
 const Links = ['Home', 'About', 'Products'];
 

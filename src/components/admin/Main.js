@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Container,
@@ -10,13 +9,12 @@ import {
   IconButton,
   Input,
   InputGroup,
-  InputRightElement,
   Text,
 } from '@chakra-ui/react';
 import { Link as BrowserLink } from 'react-router-dom';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { HiTag, HiTrash } from 'react-icons/hi';
+import { HiTrash } from 'react-icons/hi';
 import { toast } from 'react-toastify';
 import Navbar from './Navbar';
 import BannedProductCard from './BannedProductCard';

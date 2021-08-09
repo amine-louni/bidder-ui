@@ -21,8 +21,6 @@ import {
 
 import axios from 'axios';
 
-import { HiMail, HiPhone } from 'react-icons/hi';
-
 import { toast } from 'react-toastify';
 import { useUser } from '../hooks/user';
 import PendingCard from '../components/profile/PendingCard';
@@ -32,6 +30,7 @@ import MarkedAsSoldCard from '../components/profile/MarkedAsSoldCard';
 import AcceptedBuyBidCard from '../components/profile/AcceptedBuyBidCard';
 import PurchaseCard from '../components/profile/PurchaseCard';
 import ExpiredProductCard from '../components/profile/ExpiredProductCard';
+import { HiMail, HiPhone } from 'react-icons/hi';
 
 export default function Profile() {
   const { user } = useUser();
@@ -267,147 +266,7 @@ export default function Profile() {
           </Box>
         </Flex>
       </Container>
-      <Box py="3rem">
-        <Container maxW="container.lg">
-          <Heading size="lg">As a seller</Heading>
-          <Tabs overflow="auto" height="60vh">
-            <TabList>
-              <Tab>My selling list</Tab>
-              <Tab>Accepted selling bids</Tab>
-              <Tab>Marked as sold</Tab>
-              <Tab>Expired</Tab>
-            </TabList>
 
-            <TabPanels>
-              <TabPanel>
-                {sellings.length === 0 && !sellingsLoading && (
-                  <Heading size="md">You have no selling products</Heading>
-                )}
-                {sellingsLoading && <Spinner />}
-                {sellings.map(product => (
-                  <>
-                    <SellCard
-                      fetchAll={fetchAll}
-                      key={product._id}
-                      product={product}
-                    />
-                    <Divider key={product._id + 1} my="1.5rem" />
-                  </>
-                ))}
-              </TabPanel>
-              <TabPanel>
-                {acceptedSellBids.length === 0 && !acceptedSellBidsLoading && (
-                  <Heading size="md">
-                    You have no accepted sellings bids{' '}
-                  </Heading>
-                )}
-                {sellingsLoading && <Spinner />}
-                {acceptedSellBids.map(product => (
-                  <>
-                    <AcceptedSellingBidCard
-                      fetchAll={fetchAll}
-                      key={product._id}
-                      product={product}
-                    />
-                    <Divider key={product._id + 1} my="1.5rem" />
-                  </>
-                ))}
-              </TabPanel>
-              <TabPanel>
-                {markedAsSold.length === 0 && !markedAsSoldLoading && (
-                  <Heading size="md">You have no sold products</Heading>
-                )}
-                {markedAsSoldLoading && <Spinner />}
-                {markedAsSold.map(product => (
-                  <>
-                    <MarkedAsSoldCard
-                      fetchAll={fetchAll}
-                      key={product._id}
-                      product={product}
-                    />
-                    <Divider key={product._id + 1} my="1.5rem" />
-                  </>
-                ))}
-              </TabPanel>
-              <TabPanel>
-                {expiredProducts.length === 0 && !expiredProductsLoading && (
-                  <Heading size="md">You have no expired products</Heading>
-                )}
-                {expiredProductsLoading && <Spinner />}
-                {expiredProducts.map(product => (
-                  <>
-                    <ExpiredProductCard
-                      fetchAll={fetchAll}
-                      key={product._id}
-                      product={product}
-                    />
-                    <Divider key={product._id + 1} my="1.5rem" />
-                  </>
-                ))}
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-
-          <Heading size="lg">As a buyer</Heading>
-          <Tabs overflow="auto" height="60vh">
-            <TabList>
-              <Tab>My pending bids</Tab>
-              <Tab>My accepted bids</Tab>
-              <Tab>My purchase list</Tab>
-            </TabList>
-
-            <TabPanels>
-              <TabPanel>
-                {pendings.length === 0 && !loadingPendings && (
-                  <Heading size="md">You have no pending products</Heading>
-                )}
-                {loadingPendings && <Spinner />}
-                {pendings.map(product => (
-                  <PendingCard
-                    key={product._id}
-                    product={product}
-                    fetchAll={fetchAll}
-                  />
-                ))}
-              </TabPanel>
-
-              <TabPanel>
-                {accptedBids.length === 0 && !accptedBidsLoading && (
-                  <Heading size="md">You have no accepted bids</Heading>
-                )}
-                {accptedBidsLoading && <Spinner />}
-                {accptedBids.map(product => (
-                  <>
-                    <AcceptedBuyBidCard
-                      fetchAll={fetchAll}
-                      key={product._id}
-                      product={product}
-                    />
-                    <Divider key={product._id + 1} my="1.5rem" />
-                  </>
-                ))}
-              </TabPanel>
-
-              <TabPanel>
-                {purchaseHistory.length === 0 && !purchaseHistoryLoading && (
-                  <Heading size="md">You have no accepted bids</Heading>
-                )}
-                {purchaseHistoryLoading && <Spinner />}
-                {purchaseHistory.map(product => (
-                  <>
-                    <PurchaseCard
-                      fetchAll={fetchAll}
-                      key={product._id}
-                      product={product}
-                    />
-                    <Divider key={product._id + 1} my="1.5rem" />
-                  </>
-                ))}
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Container>
-      </Box>
       <Footer />
     </>
   );

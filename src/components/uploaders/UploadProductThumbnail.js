@@ -1,6 +1,6 @@
-import { Box, Button, Image } from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
 import React, { Component } from 'react';
-import { HiPlusCircle, HiTrash } from 'react-icons/hi';
+import { HiPlusCircle } from 'react-icons/hi';
 
 class UploadProductThumbnail extends Component {
   constructor(props) {

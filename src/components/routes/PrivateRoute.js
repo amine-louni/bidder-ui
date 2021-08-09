@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner } from '@chakra-ui/react';
+import { Flex, Spinner } from '@chakra-ui/react';
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useUser } from '../../hooks/user';
