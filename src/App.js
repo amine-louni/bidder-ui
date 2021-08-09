@@ -22,6 +22,7 @@ import SuperLogin from './components/admin/SuperLogin';
 import Main from './components/admin/Main';
 import SuperProducts from './components/admin/SuperProducts';
 import ExternalProfile from './views/ExternalProfile';
+import EditProfile from './views/EditProfile';
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
               <Route exact path="/products" component={Products} />
               <Route exact path="/products/:id" component={Product} />
               <Route exact path="/user/:id" component={ExternalProfile} />
+              <Route exact path="/edit-profile" component={EditProfile} />
             </Switch>
           </BrowserRouter>
         </div>

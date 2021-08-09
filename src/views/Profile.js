@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/common/Navbar';
+import { Link as BrowserLink } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import {
   Box,
@@ -17,11 +18,12 @@ import {
   TabPanels,
   TabPanel,
   Avatar,
+  Button,
 } from '@chakra-ui/react';
 
 import axios from 'axios';
 
-import { HiMail, HiPhone } from 'react-icons/hi';
+import { HiMail, HiPencil, HiPhone } from 'react-icons/hi';
 
 import { toast } from 'react-toastify';
 import { useUser } from '../hooks/user';
@@ -229,14 +231,24 @@ export default function Profile() {
 
       <Box bg="teal.900" color="white" py="6rem">
         <Container maxW="container.lg">
-          <Heading
-            as="h2"
-            textTransform="capitalize"
-            size="lg"
-            fontWeight="medium"
-          >
-            My Profile
-          </Heading>
+          <Flex align="center" justify="space-between">
+            <Heading
+              as="h2"
+              textTransform="capitalize"
+              size="lg"
+              fontWeight="medium"
+            >
+              My Profile
+            </Heading>
+            <Button
+              as={BrowserLink}
+              to="/edit-profile"
+              colorScheme="blue"
+              leftIcon={<HiPencil />}
+            >
+              EDIT
+            </Button>
+          </Flex>
         </Container>
       </Box>
       <Container
