@@ -126,6 +126,7 @@ export default function Products() {
                 </Text>
               </Heading>
               <Input
+                borderColor="blue"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Search products"
