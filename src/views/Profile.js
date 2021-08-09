@@ -100,7 +100,7 @@ export default function Profile() {
     setLoadingSellings(true);
     const res = await axios
       .get(
-        `${process.env.REACT_APP_API_URL}/api/v1/products/me/sellings/?closed=false&expired=false&banned=false`,
+        `${process.env.REACT_APP_API_URL}/api/v1/products/me/sellings/?closed=false&expired=false`,
         {
           headers: {
             Authorization: `Bearer ${storeToken}`,
@@ -123,7 +123,7 @@ export default function Profile() {
     setAcceptedSellBidsLoading(true);
     const res = await axios
       .get(
-        `${process.env.REACT_APP_API_URL}/api/v1/products/me/sellings/?closed=true&expired=false&banned=false&sold=false`,
+        `${process.env.REACT_APP_API_URL}/api/v1/products/me/sellings/?closed=true&expired=false&sold=false`,
         {
           headers: {
             Authorization: `Bearer ${storeToken}`,
@@ -145,7 +145,7 @@ export default function Profile() {
     setMarkedAsSoldLoading(true);
     const res = await axios
       .get(
-        `${process.env.REACT_APP_API_URL}/api/v1/products/me/sellings/?closed=true&banned=false&sold=true`,
+        `${process.env.REACT_APP_API_URL}/api/v1/products/me/sellings/?closed=true&sold=true`,
         {
           headers: {
             Authorization: `Bearer ${storeToken}`,
@@ -169,7 +169,7 @@ export default function Profile() {
     setPurchaseHistoryLoading(true);
     const res = await axios
       .get(
-        `${process.env.REACT_APP_API_URL}/api/v1/products/me/sellings/?closed=true&banned=false&sold=true`,
+        `${process.env.REACT_APP_API_URL}/api/v1/products/me/sellings/?closed=true&sold=true`,
         {
           headers: {
             Authorization: `Bearer ${storeToken}`,

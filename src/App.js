@@ -21,6 +21,7 @@ import PrivateAdminRoute from './components/routes/PrivateAdminRoute';
 import SuperLogin from './components/admin/SuperLogin';
 import Main from './components/admin/Main';
 import SuperProducts from './components/admin/SuperProducts';
+import ExternalProfile from './views/ExternalProfile';
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
               />
               <Route exact path="/products" component={Products} />
               <Route exact path="/products/:id" component={Product} />
+              <Route exact path="/user/:id" component={ExternalProfile} />
             </Switch>
           </BrowserRouter>
         </div>
