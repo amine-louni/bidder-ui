@@ -39,7 +39,6 @@ export default function Sell() {
     const res = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/v1/categories`
     );
-    console.log(res.data.data.docs);
     setTags(res.data.data.docs);
   };
   useEffect(() => {

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import firebase from 'firebase';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from './theme';
@@ -23,49 +24,51 @@ import Main from './components/admin/Main';
 import SuperProducts from './components/admin/SuperProducts';
 import ExternalProfile from './views/ExternalProfile';
 import EditProfile from './views/EditProfile';
+import { NotificationProvider } from './context/NotificationContext';
 
 function App() {
   return (
     <UserProvider>
-      <ChakraProvider theme={theme}>
-        <div className="App">
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={true}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            style={{ borderRadius: 60, fontWeight: 'bold' }}
-          />
-
-          <BrowserRouter>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/super-login" component={SuperLogin} />
-              <PrivateRoute path="/profile" component={Profile} />
-              <PrivateRoute path="/sell" component={Sell} />
-              <PrivateAdminRoute
-                path="/admin-dashboard"
-                exact
-                component={Main}
-              />
-              <PrivateAdminRoute
-                path="/super-products"
-                exact
-                component={SuperProducts}
-              />
-              <Route exact path="/products" component={Products} />
-              <Route exact path="/products/:id" component={Product} />
-              <Route exact path="/user/:id" component={ExternalProfile} />
-              <Route exact path="/edit-profile" component={EditProfile} />
-            </Switch>
-          </BrowserRouter>
-        </div>
-      </ChakraProvider>
+      <NotificationProvider>
+        <ChakraProvider theme={theme}>
+          <div className="App">
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={true}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              style={{ borderRadius: 60, fontWeight: 'bold' }}
+            />
+            <BrowserRouter>
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/super-login" component={SuperLogin} />
+                <PrivateRoute path="/profile" component={Profile} />
+                <PrivateRoute path="/sell" component={Sell} />
+                <PrivateAdminRoute
+                  path="/admin-dashboard"
+                  exact
+                  component={Main}
+                />
+                <PrivateAdminRoute
+                  path="/super-products"
+                  exact
+                  component={SuperProducts}
+                />
+                <Route exact path="/products" component={Products} />
+                <Route exact path="/products/:id" component={Product} />
+                <Route exact path="/user/:id" component={ExternalProfile} />
+                <Route exact path="/edit-profile" component={EditProfile} />
+              </Switch>
+            </BrowserRouter>
+          </div>
+        </ChakraProvider>
+      </NotificationProvider>
     </UserProvider>
   );
 }

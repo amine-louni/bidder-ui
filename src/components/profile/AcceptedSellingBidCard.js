@@ -32,7 +32,7 @@ export default function AcceptedSellingBidCard({ product, fetchAll }) {
         toast.error(error.response.data.message);
         setConfirm(false);
       });
-    console.log(res);
+
     if (res?.data?.status === 'success') {
       setConfirm(false);
       fetchAll();

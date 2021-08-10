@@ -24,11 +24,10 @@ export default function BannedProductCard({
         },
       })
       .catch(function (error) {
-        console.log(error.response);
         toast.error(error.response.data.message);
         setDeleting(false);
       });
-    console.log(res);
+
     if (res?.status === 204) {
       await deleteProduct(productId);
       fetchAll();

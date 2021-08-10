@@ -32,9 +32,8 @@ export default function SuperLogin() {
   });
 
   const onSubmit = async values => {
-    console.log('pass');
     setUserLoading(true);
-    console.log('pas after');
+
     const res = await axios
       .post(`${process.env.REACT_APP_API_URL}/api/v1/users/super-login`, values)
       .catch(function (error) {

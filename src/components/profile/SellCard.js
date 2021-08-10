@@ -40,7 +40,7 @@ export default function SellCard({ product, fetchAll }) {
         toast.warn('Ops, please try again');
         setDeleting(false);
       });
-    console.log(res);
+
     if (res?.status === 204) {
       setDeleting(false);
       toast.success('product has been deleted');
@@ -65,7 +65,7 @@ export default function SellCard({ product, fetchAll }) {
         toast.error(error.response.data.message);
         setLoadingConfirm(false);
       });
-    console.log(res);
+
     if (res?.data?.status === 'success') {
       setLoadingConfirm(false);
       fetchAll();

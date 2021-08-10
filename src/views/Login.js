@@ -9,6 +9,7 @@ import {
   Image,
   Text,
 } from '@chakra-ui/react';
+import firebase from 'firebase';
 import { Link as BrowserLink } from 'react-router-dom';
 import axios from 'axios';
 import { Formik } from 'formik';
@@ -33,6 +34,20 @@ export default function Login() {
 
     if (res.data.status === 'success') {
       setUserAndToken(res.data.data.user, res.data.token);
+      firebase
+        .auth()
+        .signInWithCustomToken(res.data.firebaseCustomToken)
+        .then(userCredential => {
+          // Signed in
+          var user = userCredential.user;
+          console.log(user);
+          // ...
+        })
+        .catch(error => {
+          var errorMessage = error.message;
+          console.log(errorMessage);
+          // ...
+        });
       setUserLoading(false);
       toast.success(`Login with success`);
       history.push('/');

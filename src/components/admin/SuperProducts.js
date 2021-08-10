@@ -76,7 +76,6 @@ export default function SuperProducts() {
         console.log(error.response);
         setLoadingProducts(false);
       });
-    console.log(res);
     if (res?.data?.status === 'success') {
       setProducts(res.data.data.docs);
       setLoadingProducts(false);

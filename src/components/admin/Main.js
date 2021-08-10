@@ -45,7 +45,6 @@ export default function Main() {
         }
       )
       .catch(function (error) {
-        console.log(error.response);
         toast.error(error.response.data.message);
       });
 
@@ -130,7 +129,6 @@ export default function Main() {
     const res = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/v1/categories`
     );
-    console.log(res.data.data.docs);
     setTags(res.data.data.docs);
   };
 

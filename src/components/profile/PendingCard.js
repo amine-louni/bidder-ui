@@ -27,7 +27,7 @@ export default function SmallProductCard({ product, fetchAll }) {
         toast.error(error.response.data.message);
         setDeleting(false);
       });
-    console.log(res);
+
     if (res?.status === 204) {
       setDeleting(false);
       fetchAll();

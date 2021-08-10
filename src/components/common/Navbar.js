@@ -16,11 +16,14 @@ import {
   Stack,
   Container,
   Text,
+  Icon,
+  Badge,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 import { Link as BrowserLink, useHistory } from 'react-router-dom';
 import { useUser } from '../../hooks/user';
-import { HiUser } from 'react-icons/hi';
+import { HiBell, HiUser } from 'react-icons/hi';
+import { useNotifs } from '../../hooks/notification';
 
 const Links = ['Home', 'About', 'Products'];
 
@@ -46,7 +49,8 @@ const NavLink = ({ children, to }) => (
 export default function Simple() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user, resetUser } = useUser();
-  console.log(user, 'user in navbar');
+  const { notificationCount, notifs, makeRead } = useNotifs();
+
   const history = useHistory();
   const logOut = () => {
     resetUser();
@@ -98,8 +102,43 @@ export default function Simple() {
             <Flex alignItems={'center'}>
               {user?._id && (
                 <>
-                  <Text fontWeight="500" mr="3">
-                    {user.name}
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      rounded={'full'}
+                      variant={'link'}
+                      cursor={'pointer'}
+                      minW={0}
+                      mr="2rem"
+                    >
+                      <IconButton size="lg" icon={<HiBell />} />
+                      <Badge size="lg" colorScheme="red">
+                        {notificationCount}
+                      </Badge>
+                    </MenuButton>
+                    <MenuList>
+                      {notifs.map(notif => (
+                        <MenuItem
+                          as={BrowserLink}
+                          to={`/${notif.link}`}
+                          fontWeight="bold"
+                          onClick={() => makeRead(notif.uid)}
+                        >
+                          <Box
+                            fontSize="12px"
+                            fontWeight={!notif.read ? 'bold' : 'normal'}
+                            width="20rem"
+                          >
+                            {notif.text}
+                          </Box>
+                        </MenuItem>
+                      ))}
+                    </MenuList>
+                  </Menu>
+                  <Text fontWeight="600" mr="3">
+                    {user.firstName}
+                    {user.lastName}
+                    {notificationCount}
                   </Text>
                   <Menu>
                     <MenuButton

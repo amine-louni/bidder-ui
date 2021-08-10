@@ -59,7 +59,6 @@ export default function Product() {
             console.log(error.response, 'error res');
             setLoadingProduct(false);
           });
-        console.log(res);
         if (res?.data?.status === 'success') {
           setProduct(res.data.data);
           setLoadingProduct(false);
