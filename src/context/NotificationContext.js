@@ -52,6 +52,7 @@ export const NotificationProvider = ({ children }) => {
         const listener = await db;
         db.collection('notifications')
           .where('user', '==', user._id.toString())
+          .orderBy('timestamp', 'desc')
           .onSnapshot(async snapShot => {
             if (snapShot) {
               const docs = await snapShot.docs.map(doc => {

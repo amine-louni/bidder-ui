@@ -18,6 +18,7 @@ import {
   HiSearch,
   HiShoppingBag,
 } from 'react-icons/hi';
+import { CgLayoutGrid, CgLayoutList } from 'react-icons/cg';
 import {
   Button,
   Input,
@@ -32,6 +33,7 @@ import ReactPaginate from 'react-paginate';
 
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
+import ProductCardH from '../components/ProductCardH';
 
 export default function Products() {
   const [value, setValue] = React.useState(0);
@@ -44,15 +46,18 @@ export default function Products() {
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [category, setCategory] = React.useState('');
   const [tags, setTags] = useState([]);
+
+  const [isGrid, setIsGrid] = useState(false);
   const LIMIT = 2;
   const fetchProducts = async (currentPage = 1, sort = 'name') => {
     setLoadingProducts(true);
+
     const res = await axios
       .get(
         `${
           process.env.REACT_APP_API_URL
         }/api/v1/products/?closed=false&limit=${LIMIT}&page=${currentPage}&currentPrice[lte]=${
-          value === 0 ? '100000' : value
+          value === 0 ? '1000000' : value
         }${category ? `&category=${category}` : ''}&sort=${sort}&q=${search}`
       )
       .catch(function (error) {
@@ -71,7 +76,7 @@ export default function Products() {
         `${
           process.env.REACT_APP_API_URL
         }/api/v1/products/?closed=false&limit&currentPrice[lte]=${
-          value === 0 ? '100000' : value
+          value === 0 ? '1000000' : value
         }${category ? `&category=${category}` : ''}&q=${search}`
       )
       .catch(function (error) {
@@ -149,7 +154,7 @@ export default function Products() {
                   focusThumbOnChange={false}
                   value={value}
                   onChange={handleChange}
-                  max={100000}
+                  max={1000000}
                 >
                   <SliderTrack>
                     <SliderFilledTrack />
@@ -205,6 +210,20 @@ export default function Products() {
                 p="1rem"
                 marginBottom="2rem"
               >
+                <Flex>
+                  <CgLayoutList
+                    cursor="pointer"
+                    onClick={() => setIsGrid(false)}
+                    size={40}
+                    color={isGrid ? '#AAA' : 'teal'}
+                  />
+                  <CgLayoutGrid
+                    cursor="pointer"
+                    onClick={() => setIsGrid(true)}
+                    size={40}
+                    color={!isGrid ? '#AAA' : 'teal'}
+                  />
+                </Flex>
                 <Text>Product found ({pageCount})</Text>
                 <Box flexGrow="1">
                   <Divider size="xl" colorScheme="blue" />
@@ -235,9 +254,17 @@ export default function Products() {
                   <Box width="100%" textAlign="center">
                     <Spinner size="xl" />
                   </Box>
-                ) : (
+                ) : isGrid ? (
                   products.map(product => (
                     <ProductCard
+                      key={product.id}
+                      product={product}
+                      compact={true}
+                    />
+                  ))
+                ) : (
+                  products.map(product => (
+                    <ProductCardH
                       key={product.id}
                       product={product}
                       compact={true}

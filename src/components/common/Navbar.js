@@ -24,9 +24,14 @@ import { Link as BrowserLink, useHistory } from 'react-router-dom';
 import { useUser } from '../../hooks/user';
 import { HiBell, HiUser } from 'react-icons/hi';
 import { useNotifs } from '../../hooks/notification';
+import dayjs from 'dayjs';
 
 const Links = ['Home', 'About', 'Products'];
-
+const formatData = timestamp => {
+  return dayjs().isSame(timestamp * 1000, 'day')
+    ? dayjs(new Date(timestamp * 1000)).fromNow()
+    : dayjs(new Date(timestamp * 1000)).format('dddd, DD - MMM - YY');
+};
 const NavLink = ({ children, to }) => (
   <Link
     px={2}
@@ -117,10 +122,11 @@ export default function Simple() {
                       </Badge>
                     </MenuButton>
                     <MenuList>
+                      {notifs.length === 0 && ' You have no notifications'}
                       {notifs.map(notif => (
                         <MenuItem
                           as={BrowserLink}
-                          to={`/${notif.link}`}
+                          to={`/profile`}
                           fontWeight="bold"
                           onClick={() => makeRead(notif.uid)}
                         >
@@ -130,6 +136,8 @@ export default function Simple() {
                             width="20rem"
                           >
                             {notif.text}
+                            <br />
+                            <small>{formatData(notif.timestamp)}</small>
                           </Box>
                         </MenuItem>
                       ))}
@@ -138,7 +146,6 @@ export default function Simple() {
                   <Text fontWeight="600" mr="3">
                     {user.firstName}
                     {user.lastName}
-                    {notificationCount}
                   </Text>
                   <Menu>
                     <MenuButton
