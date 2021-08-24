@@ -56,18 +56,22 @@ export default function AcceptedSellingBidCard({ product, fetchAll }) {
           <Text fontSize="14px">
             Current price : <Badge>{product.currentPrice} DA</Badge>
           </Text>
-          <Text fontSize="14px">
-            Buyer : {product.buyer.firstName} {product.buyer.lastName}
-          </Text>
-          <Text fontSize="14px">
-            Phone :{' '}
-            <Badge>
-              {' '}
-              <a href={`tel:${product.buyer.phoneNumber}`}>
-                {product.buyer.phoneNumber}
-              </a>
-            </Badge>
-          </Text>
+          {product?.buyer && (
+            <>
+              <Text fontSize="14px">
+                Buyer : {product?.buyer?.firstName} {product?.buyer?.lastName}
+              </Text>
+              <Text fontSize="14px">
+                Phone :{' '}
+                <Badge>
+                  {' '}
+                  <a href={`tel:${product?.buyer?.phoneNumber}`}>
+                    {product?.buyer?.phoneNumber}
+                  </a>
+                </Badge>
+              </Text>
+            </>
+          )}
           <Badge colorScheme="yellow">
             <Countdown
               renderer={props => (
@@ -93,7 +97,7 @@ export default function AcceptedSellingBidCard({ product, fetchAll }) {
           <br />
           <Button
             as="a"
-            href={`tel:${product.buyer.phoneNumber}`}
+            href={`tel:${product?.buyer?.phoneNumber}`}
             leftIcon={<HiPhone />}
             colorScheme="green"
             width="11rem"
